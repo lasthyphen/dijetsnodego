@@ -9,7 +9,6 @@ module github.com/lasthyphen/dijetsnodego
 go 1.18
 
 require (
-	github.com/lasthyphen/coreth v0.10.0
 	github.com/Microsoft/go-winio v0.5.2
 	github.com/NYTimes/gziphandler v1.1.1
 	github.com/ava-labs/avalanche-network-runner-sdk v0.2.0
@@ -30,6 +29,7 @@ require (
 	github.com/jackpal/gateway v1.0.6
 	github.com/jackpal/go-nat-pmp v1.0.2
 	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0
+	github.com/lasthyphen/coreth v0.10.0-rc.1
 	github.com/mr-tron/base58 v1.2.0
 	github.com/nbutton23/zxcvbn-go v0.0.0-20180912185939-ae427f1e4c1d
 	github.com/onsi/ginkgo/v2 v2.1.4
