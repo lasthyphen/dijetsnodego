@@ -14,10 +14,18 @@ func getIPs(networkID uint32) []string {
 	case constants.MainnetID:
 		return []string{
 			"127.0.0.1:9651",
+			"127.0.0.1:9653",
+			"127.0.0.1:9655",
+			"127.0.0.1:9657",
+			"127.0.0.1:9659",
 		}
 	case constants.TahoeID:
 		return []string{
 			"127.0.0.1:9651",
+			"127.0.0.1:9653",
+			"127.0.0.1:9655",
+			"127.0.0.1:9657",
+			"127.0.0.1:9659",
 		}
 	default:
 		return nil
@@ -30,10 +38,18 @@ func getNodeIDs(networkID uint32) []string {
 	case constants.MainnetID:
 		return []string{
 			"NodeID-7Xhw2mDxuDS44j42TCB6U5579esbSt3Lg",
+			"NodeID-MFrZFVCXPv5iCn6M9K6XduxGTYp891xXZ",
+			"NodeID-NFBbbJ4qCmNaCzeW7sxErhvWqvEQMnYcN",
+			"NodeID-GWPcbFJZFfZreETSoWjPimr846mXEKCtu",
+			"NodeID-P7oB2McjBGgW2NXXWVYjV8JEDFoW9xDE5",
 		}
 	case constants.TahoeID:
 		return []string{
 			"NodeID-7Xhw2mDxuDS44j42TCB6U5579esbSt3Lg",
+			"NodeID-MFrZFVCXPv5iCn6M9K6XduxGTYp891xXZ",
+			"NodeID-NFBbbJ4qCmNaCzeW7sxErhvWqvEQMnYcN",
+			"NodeID-GWPcbFJZFfZreETSoWjPimr846mXEKCtu",
+			"NodeID-P7oB2McjBGgW2NXXWVYjV8JEDFoW9xDE5",
 		}
 	default:
 		return nil
