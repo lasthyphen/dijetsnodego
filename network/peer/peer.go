@@ -539,14 +539,6 @@ func (p *peer) sendPings() {
 			}
 
 			if p.finishedHandshake.GetValue() {
-				if err := p.VersionCompatibility.Compatible(p.version); err != nil {
-					p.Log.Debug("disconnecting from peer",
-						zap.String("reason", "version not compatible"),
-						zap.Stringer("nodeID", p.id),
-						zap.Stringer("peerVersion", p.version),
-						zap.Error(err),
-					)
-					return
 				}
 			}
 
@@ -554,10 +546,7 @@ func (p *peer) sendPings() {
 			p.Log.AssertNoError(err)
 
 			p.Send(p.onClosingCtx, pingMessage)
-		case <-p.onClosingCtx.Done():
-			return
 		}
-	}
 }
 
 func (p *peer) handle(msg message.InboundMessage) {
@@ -689,54 +678,6 @@ func (p *peer) handleVersion(msg message.InboundMessage) {
 				zap.Uint64("myTime", myTime),
 			)
 		}
-		p.StartClose()
-		return
-	}
-
-	peerVersionStrIntf, err := msg.Get(message.VersionStr)
-	if err != nil {
-		p.Log.Debug("message with invalid field",
-			zap.Stringer("nodeID", p.id),
-			zap.Stringer("messageOp", message.Version),
-			zap.Stringer("field", message.VersionStr),
-			zap.Error(err),
-		)
-		p.StartClose()
-		return
-	}
-	peerVersionStr := peerVersionStrIntf.(string)
-
-	peerVersion, err := version.ParseApplication(peerVersionStr)
-	if err != nil {
-		p.Log.Debug("failed to parse peer version",
-			zap.Stringer("nodeID", p.id),
-			zap.Error(err),
-		)
-		p.StartClose()
-		return
-	}
-	p.version = peerVersion
-
-	if p.VersionCompatibility.Version().Before(peerVersion) {
-		if p.Beacons.Contains(p.id) {
-			p.Log.Info("beacon attempting to connect with newer version. You may want to update your client",
-				zap.Stringer("nodeID", p.id),
-				zap.Stringer("beaconVersion", peerVersion),
-			)
-		} else {
-			p.Log.Debug("peer attempting to connect with newer version. You may want to update your client",
-				zap.Stringer("nodeID", p.id),
-				zap.Stringer("peerVersion", peerVersion),
-			)
-		}
-	}
-
-	if err := p.VersionCompatibility.Compatible(peerVersion); err != nil {
-		p.Log.Verbo("peer version not compatible",
-			zap.Stringer("nodeID", p.id),
-			zap.Stringer("peerVersion", peerVersion),
-			zap.Error(err),
-		)
 		p.StartClose()
 		return
 	}
