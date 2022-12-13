@@ -10,7 +10,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/ids"
 	"github.com/lasthyphen/dijetsnodego/utils/set"
 
-	ledger "github.com/lasthyphen/dijets-ledger-go"
+	ledger "github.com/lasthyphen/djiets-ledger-go"
 )
 
 var (

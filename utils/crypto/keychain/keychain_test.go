@@ -9,7 +9,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/lasthyphen/dijets-ledger-go/mocks"
+	"github.com/lasthyphen/djiets-ledger-go/mocks"
 	"github.com/lasthyphen/dijetsnodego/ids"
 )
 
