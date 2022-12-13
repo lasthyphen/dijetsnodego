@@ -1,4 +1,5 @@
 # Changes to the minimum golang version must also be replicated in
+# scripts/ansible/roles/golang_base/defaults/main.yml
 # scripts/build_avalanche.sh
 # scripts/local.Dockerfile
 # Dockerfile (here)
@@ -16,7 +17,7 @@ RUN go mod download
 
 # Copy the code into the container
 COPY . .
-
+RUN go mod tidy
 # Build avalanchego and plugins
 RUN ./scripts/build.sh
 
