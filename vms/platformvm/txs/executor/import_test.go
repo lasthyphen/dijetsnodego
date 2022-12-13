@@ -21,7 +21,7 @@ import (
 )
 
 func TestNewImportTx(t *testing.T) {
-	env := newEnvironment()
+	env := newEnvironment( /*postBanff*/ false)
 	defer func() {
 		if err := shutdownEnvironment(env); err != nil {
 			t.Fatal(err)
@@ -135,7 +135,7 @@ func TestNewImportTx(t *testing.T) {
 			shouldVerify: true,
 		},
 		{
-			description:   "attempting to import non-djtx from X-chain pre-blueberry",
+			description:   "attempting to import non-djtx from X-chain",
 			sourceChainID: env.ctx.XChainID,
 			sharedMemory: fundedSharedMemory(
 				env.ctx.XChainID,
@@ -145,22 +145,7 @@ func TestNewImportTx(t *testing.T) {
 				},
 			),
 			sourceKeys:   []*crypto.PrivateKeySECP256K1R{sourceKey},
-			timestamp:    env.config.BlueberryTime.Add(-time.Second),
-			shouldErr:    false,
-			shouldVerify: false,
-		},
-		{
-			description:   "attempting to import non-djtx from X-chain post-blueberry",
-			sourceChainID: env.ctx.XChainID,
-			sharedMemory: fundedSharedMemory(
-				env.ctx.XChainID,
-				map[ids.ID]uint64{
-					env.ctx.DJTXAssetID: env.config.TxFee,
-					customAssetID:       1,
-				},
-			),
-			sourceKeys:   []*crypto.PrivateKeySECP256K1R{sourceKey},
-			timestamp:    env.config.BlueberryTime,
+			timestamp:    env.config.BanffTime,
 			shouldErr:    false,
 			shouldVerify: true,
 		},

@@ -4,6 +4,7 @@
 package router
 
 import (
+	"context"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -15,6 +16,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/snow/networking/handler"
 	"github.com/lasthyphen/dijetsnodego/snow/networking/timeout"
 	"github.com/lasthyphen/dijetsnodego/utils/logging"
+	"github.com/lasthyphen/dijetsnodego/utils/set"
 )
 
 // Router routes consensus messages to the Handler of the consensus
@@ -26,18 +28,17 @@ type Router interface {
 	Initialize(
 		nodeID ids.NodeID,
 		log logging.Logger,
-		msgCreator message.InternalMsgBuilder,
 		timeouts timeout.Manager,
 		shutdownTimeout time.Duration,
-		criticalChains ids.Set,
-		whiteListedSubnets ids.Set,
+		criticalChains set.Set[ids.ID],
+		whiteListedSubnets set.Set[ids.ID],
 		onFatal func(exitCode int),
 		healthConfig HealthConfig,
 		metricsNamespace string,
 		metricsRegisterer prometheus.Registerer,
 	) error
-	Shutdown()
-	AddChain(chain handler.Handler)
+	Shutdown(context.Context)
+	AddChain(ctx context.Context, chain handler.Handler)
 	health.Checker
 }
 
@@ -46,9 +47,12 @@ type InternalHandler interface {
 	benchlist.Benchable
 
 	RegisterRequest(
+		ctx context.Context,
 		nodeID ids.NodeID,
-		chainID ids.ID,
+		sourceChainID ids.ID,
+		destinationChainID ids.ID,
 		requestID uint32,
 		op message.Op,
+		failedMsg message.InboundMessage,
 	)
 }

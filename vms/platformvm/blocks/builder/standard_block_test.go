@@ -4,8 +4,8 @@
 package builder
 
 import (
+	"context"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/require"
 
@@ -14,7 +14,6 @@ import (
 	"github.com/lasthyphen/dijetsnodego/ids"
 	"github.com/lasthyphen/dijetsnodego/utils/crypto"
 	"github.com/lasthyphen/dijetsnodego/vms/components/djtx"
-	"github.com/lasthyphen/dijetsnodego/vms/platformvm/blocks"
 	"github.com/lasthyphen/dijetsnodego/vms/platformvm/status"
 	"github.com/lasthyphen/dijetsnodego/vms/platformvm/txs"
 	"github.com/lasthyphen/dijetsnodego/vms/secp256k1fx"
@@ -53,7 +52,7 @@ func TestAtomicTxImports(t *testing.T) {
 			},
 		},
 	}
-	utxoBytes, err := blocks.Codec.Marshal(txs.Version, utxo)
+	utxoBytes, err := txs.Codec.Marshal(txs.Version, utxo)
 	require.NoError(err)
 
 	inputID := utxo.InputID()
@@ -76,14 +75,12 @@ func TestAtomicTxImports(t *testing.T) {
 	)
 	require.NoError(err)
 
-	env.state.SetTimestamp(env.config.ApricotPhase5Time.Add(100 * time.Second))
-
 	require.NoError(env.Builder.Add(tx))
-	b, err := env.Builder.BuildBlock()
+	b, err := env.Builder.BuildBlock(context.Background())
 	require.NoError(err)
 	// Test multiple verify calls work
-	require.NoError(b.Verify())
-	require.NoError(b.Accept())
+	require.NoError(b.Verify(context.Background()))
+	require.NoError(b.Accept(context.Background()))
 	_, txStatus, err := env.state.GetTx(tx.ID())
 	require.NoError(err)
 	// Ensure transaction is in the committed state

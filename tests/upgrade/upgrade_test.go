@@ -15,8 +15,8 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 
-	"github.com/lasthyphen/dijetsnodego/tests"
 	runner_sdk "github.com/ava-labs/avalanche-network-runner-sdk"
+	"github.com/lasthyphen/dijetsnodego/tests"
 )
 
 func TestUpgrade(t *testing.T) {
@@ -95,7 +95,7 @@ var _ = ginkgo.BeforeSuite(func() {
 	)
 	cancel()
 	gomega.Expect(err).Should(gomega.BeNil())
-	tests.Outf("{{green}}successfully started network-runner :{{/}} %+v\n", resp.ClusterInfo.NodeNames)
+	tests.Outf("{{green}}successfully started network-runner: {{/}} %+v\n", resp.ClusterInfo.NodeNames)
 
 	// start is async, so wait some time for cluster health
 	time.Sleep(time.Minute)

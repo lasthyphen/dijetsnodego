@@ -31,15 +31,15 @@ const (
 )
 
 var (
-	_ txs.Visitor = &ProposalTxExecutor{}
+	_ txs.Visitor = (*ProposalTxExecutor)(nil)
 
-	errChildBlockNotAfterParent          = errors.New("proposed timestamp not after current chain time")
-	errInvalidState                      = errors.New("generated output isn't valid state")
-	errShouldBePermissionlessStaker      = errors.New("expected permissionless staker")
-	errWrongTxType                       = errors.New("wrong transaction type")
-	errInvalidID                         = errors.New("invalid ID")
-	errProposedAddStakerTxAfterBlueberry = errors.New("staker transaction proposed after Blueberry")
-	errAdvanceTimeTxIssuedAfterBlueberry = errors.New("AdvanceTimeTx issued after Blueberry")
+	errChildBlockNotAfterParent      = errors.New("proposed timestamp not after current chain time")
+	errInvalidState                  = errors.New("generated output isn't valid state")
+	errShouldBePermissionlessStaker  = errors.New("expected permissionless staker")
+	errWrongTxType                   = errors.New("wrong transaction type")
+	errInvalidID                     = errors.New("invalid ID")
+	errProposedAddStakerTxAfterBanff = errors.New("staker transaction proposed after Banff")
+	errAdvanceTimeTxIssuedAfterBanff = errors.New("AdvanceTimeTx issued after Banff")
 )
 
 type ProposalTxExecutor struct {
@@ -63,14 +63,29 @@ type ProposalTxExecutor struct {
 	PrefersCommit bool
 }
 
-func (*ProposalTxExecutor) CreateChainTx(*txs.CreateChainTx) error   { return errWrongTxType }
-func (*ProposalTxExecutor) CreateSubnetTx(*txs.CreateSubnetTx) error { return errWrongTxType }
-func (*ProposalTxExecutor) ImportTx(*txs.ImportTx) error             { return errWrongTxType }
-func (*ProposalTxExecutor) ExportTx(*txs.ExportTx) error             { return errWrongTxType }
+func (*ProposalTxExecutor) CreateChainTx(*txs.CreateChainTx) error {
+	return errWrongTxType
+}
+
+func (*ProposalTxExecutor) CreateSubnetTx(*txs.CreateSubnetTx) error {
+	return errWrongTxType
+}
+
+func (*ProposalTxExecutor) ImportTx(*txs.ImportTx) error {
+	return errWrongTxType
+}
+
+func (*ProposalTxExecutor) ExportTx(*txs.ExportTx) error {
+	return errWrongTxType
+}
+
 func (*ProposalTxExecutor) RemoveSubnetValidatorTx(*txs.RemoveSubnetValidatorTx) error {
 	return errWrongTxType
 }
-func (*ProposalTxExecutor) TransformSubnetTx(*txs.TransformSubnetTx) error { return errWrongTxType }
+
+func (*ProposalTxExecutor) TransformSubnetTx(*txs.TransformSubnetTx) error {
+	return errWrongTxType
+}
 
 func (*ProposalTxExecutor) AddPermissionlessValidatorTx(*txs.AddPermissionlessValidatorTx) error {
 	return errWrongTxType
@@ -81,16 +96,16 @@ func (*ProposalTxExecutor) AddPermissionlessDelegatorTx(*txs.AddPermissionlessDe
 }
 
 func (e *ProposalTxExecutor) AddValidatorTx(tx *txs.AddValidatorTx) error {
-	// AddValidatorTx is a proposal transaction until the Blueberry fork
+	// AddValidatorTx is a proposal transaction until the Banff fork
 	// activation. Following the activation, AddValidatorTxs must be issued into
 	// StandardBlocks.
 	currentTimestamp := e.OnCommitState.GetTimestamp()
-	if e.Config.IsBlueberryActivated(currentTimestamp) {
+	if e.Config.IsBanffActivated(currentTimestamp) {
 		return fmt.Errorf(
-			"%w: timestamp (%s) >= Blueberry fork time (%s)",
-			errProposedAddStakerTxAfterBlueberry,
+			"%w: timestamp (%s) >= Banff fork time (%s)",
+			errProposedAddStakerTxAfterBanff,
 			currentTimestamp,
-			e.Config.BlueberryTime,
+			e.Config.BanffTime,
 		)
 	}
 
@@ -112,7 +127,11 @@ func (e *ProposalTxExecutor) AddValidatorTx(tx *txs.AddValidatorTx) error {
 	// Produce the UTXOs
 	utxo.Produce(e.OnCommitState, txID, tx.Outs)
 
-	newStaker := state.NewPendingStaker(txID, tx)
+	newStaker, err := state.NewPendingStaker(txID, tx)
+	if err != nil {
+		return err
+	}
+
 	e.OnCommitState.PutPendingValidator(newStaker)
 
 	// Set up the state if this tx is aborted
@@ -126,16 +145,16 @@ func (e *ProposalTxExecutor) AddValidatorTx(tx *txs.AddValidatorTx) error {
 }
 
 func (e *ProposalTxExecutor) AddSubnetValidatorTx(tx *txs.AddSubnetValidatorTx) error {
-	// AddSubnetValidatorTx is a proposal transaction until the Blueberry fork
+	// AddSubnetValidatorTx is a proposal transaction until the Banff fork
 	// activation. Following the activation, AddSubnetValidatorTxs must be
 	// issued into StandardBlocks.
 	currentTimestamp := e.OnCommitState.GetTimestamp()
-	if e.Config.IsBlueberryActivated(currentTimestamp) {
+	if e.Config.IsBanffActivated(currentTimestamp) {
 		return fmt.Errorf(
-			"%w: timestamp (%s) >= Blueberry fork time (%s)",
-			errProposedAddStakerTxAfterBlueberry,
+			"%w: timestamp (%s) >= Banff fork time (%s)",
+			errProposedAddStakerTxAfterBanff,
 			currentTimestamp,
-			e.Config.BlueberryTime,
+			e.Config.BanffTime,
 		)
 	}
 
@@ -156,7 +175,11 @@ func (e *ProposalTxExecutor) AddSubnetValidatorTx(tx *txs.AddSubnetValidatorTx) 
 	// Produce the UTXOs
 	utxo.Produce(e.OnCommitState, txID, tx.Outs)
 
-	newStaker := state.NewPendingStaker(txID, tx)
+	newStaker, err := state.NewPendingStaker(txID, tx)
+	if err != nil {
+		return err
+	}
+
 	e.OnCommitState.PutPendingValidator(newStaker)
 
 	// Set up the state if this tx is aborted
@@ -170,16 +193,16 @@ func (e *ProposalTxExecutor) AddSubnetValidatorTx(tx *txs.AddSubnetValidatorTx) 
 }
 
 func (e *ProposalTxExecutor) AddDelegatorTx(tx *txs.AddDelegatorTx) error {
-	// AddDelegatorTx is a proposal transaction until the Blueberry fork
+	// AddDelegatorTx is a proposal transaction until the Banff fork
 	// activation. Following the activation, AddDelegatorTxs must be issued into
 	// StandardBlocks.
 	currentTimestamp := e.OnCommitState.GetTimestamp()
-	if e.Config.IsBlueberryActivated(currentTimestamp) {
+	if e.Config.IsBanffActivated(currentTimestamp) {
 		return fmt.Errorf(
-			"%w: timestamp (%s) >= Blueberry fork time (%s)",
-			errProposedAddStakerTxAfterBlueberry,
+			"%w: timestamp (%s) >= Banff fork time (%s)",
+			errProposedAddStakerTxAfterBanff,
 			currentTimestamp,
-			e.Config.BlueberryTime,
+			e.Config.BanffTime,
 		)
 	}
 
@@ -201,7 +224,11 @@ func (e *ProposalTxExecutor) AddDelegatorTx(tx *txs.AddDelegatorTx) error {
 	// Produce the UTXOs
 	utxo.Produce(e.OnCommitState, txID, tx.Outs)
 
-	newStaker := state.NewPendingStaker(txID, tx)
+	newStaker, err := state.NewPendingStaker(txID, tx)
+	if err != nil {
+		return err
+	}
+
 	e.OnCommitState.PutPendingDelegator(newStaker)
 
 	// Set up the state if this tx is aborted
@@ -224,12 +251,12 @@ func (e *ProposalTxExecutor) AdvanceTimeTx(tx *txs.AdvanceTimeTx) error {
 
 	// Validate [newChainTime]
 	newChainTime := tx.Timestamp()
-	if e.Config.IsBlueberryActivated(newChainTime) {
+	if e.Config.IsBanffActivated(newChainTime) {
 		return fmt.Errorf(
-			"%w: proposed timestamp (%s) >= Blueberry fork time (%s)",
-			errAdvanceTimeTxIssuedAfterBlueberry,
+			"%w: proposed timestamp (%s) >= Banff fork time (%s)",
+			errAdvanceTimeTxIssuedAfterBanff,
 			newChainTime,
-			e.Config.BlueberryTime,
+			e.Config.BanffTime,
 		)
 	}
 
@@ -507,7 +534,7 @@ func (e *ProposalTxExecutor) RewardValidatorTx(tx *txs.RewardValidatorTx) error 
 	if err != nil {
 		return err
 	}
-	newSupply, err := math.Sub64(currentSupply, stakerToRemove.PotentialReward)
+	newSupply, err := math.Sub(currentSupply, stakerToRemove.PotentialReward)
 	if err != nil {
 		return err
 	}
@@ -532,6 +559,7 @@ func (e *ProposalTxExecutor) RewardValidatorTx(tx *txs.RewardValidatorTx) error 
 	// TODO: calculate subnet uptimes
 	uptime, err := e.Uptimes.CalculateUptimePercentFrom(
 		primaryNetworkValidator.NodeID,
+		constants.PrimaryNetworkID,
 		primaryNetworkValidator.StartTime,
 	)
 	if err != nil {
@@ -687,14 +715,14 @@ func GetMaxWeight(
 		if !delegator.NextTime.Before(startTime) {
 			// We have advanced time to be at the inside of the delegation
 			// window. Make sure that the max weight is updated accordingly.
-			currentMax = math.Max64(currentMax, currentWeight)
+			currentMax = math.Max(currentMax, currentWeight)
 		}
 
 		var op func(uint64, uint64) (uint64, error)
 		if isAdded {
 			op = math.Add64
 		} else {
-			op = math.Sub64
+			op = math.Sub[uint64]
 		}
 		currentWeight, err = op(currentWeight, delegator.Weight)
 		if err != nil {
@@ -704,5 +732,5 @@ func GetMaxWeight(
 	// Because we assume [startTime] < [endTime], we have advanced time to
 	// be at the end of the delegation window. Make sure that the max weight is
 	// updated accordingly.
-	return math.Max64(currentMax, currentWeight), nil
+	return math.Max(currentMax, currentWeight), nil
 }

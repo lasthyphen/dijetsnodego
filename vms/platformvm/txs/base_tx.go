@@ -9,6 +9,8 @@ import (
 
 	"github.com/lasthyphen/dijetsnodego/ids"
 	"github.com/lasthyphen/dijetsnodego/snow"
+	"github.com/lasthyphen/dijetsnodego/utils"
+	"github.com/lasthyphen/dijetsnodego/utils/set"
 	"github.com/lasthyphen/dijetsnodego/vms/components/djtx"
 	"github.com/lasthyphen/dijetsnodego/vms/secp256k1fx"
 )
@@ -31,19 +33,25 @@ type BaseTx struct {
 	unsignedBytes []byte // Unsigned byte representation of this data
 }
 
-func (tx *BaseTx) Initialize(unsignedBytes []byte) { tx.unsignedBytes = unsignedBytes }
+func (tx *BaseTx) Initialize(unsignedBytes []byte) {
+	tx.unsignedBytes = unsignedBytes
+}
 
-func (tx *BaseTx) Bytes() []byte { return tx.unsignedBytes }
+func (tx *BaseTx) Bytes() []byte {
+	return tx.unsignedBytes
+}
 
-func (tx *BaseTx) InputIDs() ids.Set {
-	inputIDs := ids.NewSet(len(tx.Ins))
+func (tx *BaseTx) InputIDs() set.Set[ids.ID] {
+	inputIDs := set.NewSet[ids.ID](len(tx.Ins))
 	for _, in := range tx.Ins {
 		inputIDs.Add(in.InputID())
 	}
 	return inputIDs
 }
 
-func (tx *BaseTx) Outputs() []*djtx.TransferableOutput { return tx.Outs }
+func (tx *BaseTx) Outputs() []*djtx.TransferableOutput {
+	return tx.Outs
+}
 
 // InitCtx sets the FxID fields in the inputs and outputs of this [BaseTx]. Also
 // sets the [ctx] to the given [vm.ctx] so that the addresses can be json
@@ -82,7 +90,7 @@ func (tx *BaseTx) SyntacticVerify(ctx *snow.Context) error {
 	switch {
 	case !djtx.IsSortedTransferableOutputs(tx.Outs, Codec):
 		return errOutputsNotSorted
-	case !djtx.IsSortedAndUniqueTransferableInputs(tx.Ins):
+	case !utils.IsSortedAndUniqueSortable(tx.Ins):
 		return errInputsNotSortedUnique
 	default:
 		return nil

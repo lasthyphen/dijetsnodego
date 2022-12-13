@@ -44,7 +44,9 @@ func NewSigned(
 	return res, res.Sign(c, signers)
 }
 
-// Parse signed tx starting from its byte representation
+// Parse signed tx starting from its byte representation.
+// Note: We explicitly pass the codec in Parse since we may need to parse
+//       P-Chain genesis txs whose length exceed the max length of txs.Codec.
 func Parse(c codec.Manager, signedBytes []byte) (*Tx, error) {
 	tx := &Tx{}
 	if _, err := c.Unmarshal(signedBytes, tx); err != nil {
@@ -65,8 +67,13 @@ func (tx *Tx) Initialize(unsignedBytes, signedBytes []byte) {
 	tx.id = hashing.ComputeHash256Array(signedBytes)
 }
 
-func (tx *Tx) Bytes() []byte { return tx.bytes }
-func (tx *Tx) ID() ids.ID    { return tx.id }
+func (tx *Tx) Bytes() []byte {
+	return tx.bytes
+}
+
+func (tx *Tx) ID() ids.ID {
+	return tx.id
+}
 
 // UTXOs returns the UTXOs transaction is producing.
 func (tx *Tx) UTXOs() []*djtx.UTXO {
@@ -97,6 +104,8 @@ func (tx *Tx) SyntacticVerify(ctx *snow.Context) error {
 }
 
 // Sign this transaction with the provided signers
+// Note: We explicitly pass the codec in Sign since we may need to sign P-Chain
+//       genesis txs whose length exceed the max length of txs.Codec.
 func (tx *Tx) Sign(c codec.Manager, signers [][]*crypto.PrivateKeySECP256K1R) error {
 	unsignedBytes, err := c.Marshal(Version, &tx.Unsigned)
 	if err != nil {

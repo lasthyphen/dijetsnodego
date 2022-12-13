@@ -11,7 +11,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/vms/avm"
 )
 
-var _ Context = &context{}
+var _ Context = (*context)(nil)
 
 type Context interface {
 	NetworkID() uint32
@@ -85,8 +85,22 @@ func NewContext(
 	}
 }
 
-func (c *context) NetworkID() uint32        { return c.networkID }
-func (c *context) BlockchainID() ids.ID     { return c.blockchainID }
-func (c *context) DJTXAssetID() ids.ID      { return c.djtxAssetID }
-func (c *context) BaseTxFee() uint64        { return c.baseTxFee }
-func (c *context) CreateAssetTxFee() uint64 { return c.createAssetTxFee }
+func (c *context) NetworkID() uint32 {
+	return c.networkID
+}
+
+func (c *context) BlockchainID() ids.ID {
+	return c.blockchainID
+}
+
+func (c *context) DJTXAssetID() ids.ID {
+	return c.djtxAssetID
+}
+
+func (c *context) BaseTxFee() uint64 {
+	return c.baseTxFee
+}
+
+func (c *context) CreateAssetTxFee() uint64 {
+	return c.createAssetTxFee
+}

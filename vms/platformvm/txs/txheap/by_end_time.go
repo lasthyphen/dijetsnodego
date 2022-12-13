@@ -9,7 +9,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/vms/platformvm/txs"
 )
 
-var _ TimedHeap = &byEndTime{}
+var _ TimedHeap = (*byEndTime)(nil)
 
 type byEndTime struct {
 	txHeap

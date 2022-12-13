@@ -12,7 +12,7 @@ import (
 	subnetlookuppb "github.com/lasthyphen/dijetsnodego/proto/pb/subnetlookup"
 )
 
-var _ snow.SubnetLookup = &Client{}
+var _ snow.SubnetLookup = (*Client)(nil)
 
 // Client is a subnet lookup that talks over RPC.
 type Client struct {

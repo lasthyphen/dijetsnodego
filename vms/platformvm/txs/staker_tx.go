@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/lasthyphen/dijetsnodego/ids"
+	"github.com/lasthyphen/dijetsnodego/utils/crypto/bls"
 	"github.com/lasthyphen/dijetsnodego/vms/components/djtx"
 	"github.com/lasthyphen/dijetsnodego/vms/platformvm/fx"
 )
@@ -52,6 +53,9 @@ type PermissionlessStaker interface {
 type Staker interface {
 	SubnetID() ids.ID
 	NodeID() ids.NodeID
+	// PublicKey returns the BLS public key registered by this transaction. If
+	// there was no key registered by this transaction, it will return false.
+	PublicKey() (*bls.PublicKey, bool, error)
 	StartTime() time.Time
 	EndTime() time.Time
 	Weight() uint64

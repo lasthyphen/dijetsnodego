@@ -13,7 +13,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/vms/components/djtx"
 )
 
-var _ Backend = &backend{}
+var _ Backend = (*backend)(nil)
 
 type ChainUTXOs interface {
 	AddUTXO(ctx stdcontext.Context, destinationChainID ids.ID, utxo *djtx.UTXO) error

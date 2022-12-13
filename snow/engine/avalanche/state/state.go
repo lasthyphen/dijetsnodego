@@ -28,18 +28,13 @@ type state struct {
 // Returns nil if it's not found.
 // TODO this should return an error
 func (s *state) Vertex(id ids.ID) vertex.StatelessVertex {
-	var (
-		vtx   vertex.StatelessVertex
-		bytes []byte
-		err   error
-	)
-
 	if vtxIntf, found := s.dbCache.Get(id); found {
-		vtx, _ = vtxIntf.(vertex.StatelessVertex)
+		vtx, _ := vtxIntf.(vertex.StatelessVertex)
 		return vtx
 	}
 
-	if bytes, err = s.db.Get(id[:]); err != nil {
+	bytes, err := s.db.Get(id[:])
+	if err != nil {
 		s.log.Verbo("failed to get vertex from database",
 			zap.Binary("key", id[:]),
 			zap.Error(err),
@@ -48,7 +43,8 @@ func (s *state) Vertex(id ids.ID) vertex.StatelessVertex {
 		return nil
 	}
 
-	if vtx, err = s.serializer.parseVertex(bytes); err != nil {
+	vtx, err := s.serializer.parseVertex(bytes)
+	if err != nil {
 		s.log.Error("failed parsing saved vertex",
 			zap.Binary("key", id[:]),
 			zap.Binary("vertex", bytes),
@@ -143,14 +139,10 @@ func (s *state) SetEdge(id ids.ID, frontier []ids.ID) error {
 
 	size := wrappers.IntLen + hashing.HashLen*len(frontier)
 	p := wrappers.Packer{Bytes: make([]byte, size)}
-
 	p.PackInt(uint32(len(frontier)))
 	for _, id := range frontier {
 		p.PackFixedBytes(id[:])
 	}
-
-	s.log.AssertNoError(p.Err)
-	s.log.AssertTrue(p.Offset == len(p.Bytes), "Wrong offset after packing")
 
 	return s.db.Put(id[:], p.Bytes)
 }

@@ -11,6 +11,7 @@ import (
 
 	"github.com/lasthyphen/dijetsnodego/cache"
 	"github.com/lasthyphen/dijetsnodego/ids"
+	"github.com/lasthyphen/dijetsnodego/utils/set"
 	"github.com/lasthyphen/dijetsnodego/utils/units"
 	"github.com/lasthyphen/dijetsnodego/vms/platformvm/txs"
 	"github.com/lasthyphen/dijetsnodego/vms/platformvm/txs/txheap"
@@ -31,7 +32,7 @@ const (
 )
 
 var (
-	_ Mempool = &mempool{}
+	_ Mempool = (*mempool)(nil)
 
 	errMempoolFull = errors.New("mempool is full")
 )
@@ -54,13 +55,12 @@ type Mempool interface {
 	Get(txID ids.ID) *txs.Tx
 	Remove(txs []*txs.Tx)
 
-	// Following Blueberry activation, all mempool transactions,
+	// Following Banff activation, all mempool transactions,
 	// (both decision and staker) are included into Standard blocks.
 	// HasTxs allow to check for availability of any mempool transaction.
 	HasTxs() bool
-	// PeekTxs returns the next txs for Blueberry blocks
+	// PeekTxs returns the next txs for Banff blocks
 	// up to maxTxsBytes without removing them from the mempool.
-	// It returns nil if !HasTxs()
 	PeekTxs(maxTxsBytes int) []*txs.Tx
 
 	HasStakerTx() bool
@@ -75,16 +75,6 @@ type Mempool interface {
 	// reissued.
 	MarkDropped(txID ids.ID, reason string)
 	GetDropReason(txID ids.ID) (string, bool)
-
-	// TODO: following Blueberry, these methods can be removed
-
-	// Pre Blueberry activation, decision transactions are included into
-	// standard blocks.
-	HasApricotDecisionTxs() bool
-	// PeekApricotDecisionTxs returns the next decisionTxs, up to maxTxsBytes,
-	// without removing them from the mempool.
-	// It returns nil if !HasApricotDecisionTxs()
-	PeekApricotDecisionTxs(maxTxsBytes int) []*txs.Tx
 }
 
 // Transactions from clients that have not yet been put into blocks and added to
@@ -103,7 +93,7 @@ type mempool struct {
 	// Value: String repr. of the verification error
 	droppedTxIDs *cache.LRU
 
-	consumedUTXOs ids.Set
+	consumedUTXOs set.Set[ids.ID]
 
 	blkTimer BlockTimer
 }
@@ -147,14 +137,19 @@ func NewMempool(
 		unissuedDecisionTxs:  unissuedDecisionTxs,
 		unissuedStakerTxs:    unissuedStakerTxs,
 		droppedTxIDs:         &cache.LRU{Size: droppedTxIDsCacheSize},
-		consumedUTXOs:        ids.NewSet(initialConsumedUTXOsSize),
+		consumedUTXOs:        set.NewSet[ids.ID](initialConsumedUTXOsSize),
 		dropIncoming:         false, // enable tx adding by default
 		blkTimer:             blkTimer,
 	}, nil
 }
 
-func (m *mempool) EnableAdding()  { m.dropIncoming = false }
-func (m *mempool) DisableAdding() { m.dropIncoming = true }
+func (m *mempool) EnableAdding() {
+	m.dropIncoming = false
+}
+
+func (m *mempool) DisableAdding() {
+	m.dropIncoming = true
+}
 
 func (m *mempool) Add(tx *txs.Tx) error {
 	if m.dropIncoming {
@@ -229,16 +224,16 @@ func (m *mempool) HasTxs() bool {
 }
 
 func (m *mempool) PeekTxs(maxTxsBytes int) []*txs.Tx {
-	txs, size := m.peekApricotDecisionTxs(maxTxsBytes)
+	txs := m.unissuedDecisionTxs.List()
+	txs = append(txs, m.unissuedStakerTxs.List()...)
 
-	for _, tx := range m.unissuedStakerTxs.List() {
+	size := 0
+	for i, tx := range txs {
 		size += len(tx.Bytes())
 		if size > maxTxsBytes {
-			break
+			return txs[:i]
 		}
-		txs = append(txs, tx)
 	}
-
 	return txs
 }
 
@@ -252,9 +247,9 @@ func (m *mempool) addStakerTx(tx *txs.Tx) {
 	m.register(tx)
 }
 
-func (m *mempool) HasApricotDecisionTxs() bool { return m.unissuedDecisionTxs.Len() > 0 }
-
-func (m *mempool) HasStakerTx() bool { return m.unissuedStakerTxs.Len() > 0 }
+func (m *mempool) HasStakerTx() bool {
+	return m.unissuedStakerTxs.Len() > 0
+}
 
 func (m *mempool) removeDecisionTxs(txs []*txs.Tx) {
 	for _, tx := range txs {
@@ -270,27 +265,6 @@ func (m *mempool) removeStakerTx(tx *txs.Tx) {
 	if m.unissuedStakerTxs.Remove(txID) != nil {
 		m.deregister(tx)
 	}
-}
-
-func (m *mempool) PeekApricotDecisionTxs(maxTxsBytes int) []*txs.Tx {
-	txs, _ := m.peekApricotDecisionTxs(maxTxsBytes)
-	return txs
-}
-
-func (m *mempool) peekApricotDecisionTxs(maxTxsBytes int) ([]*txs.Tx, int) {
-	list := m.unissuedDecisionTxs.List()
-
-	totalBytes, txsToKeep := 0, 0
-	for _, tx := range list {
-		totalBytes += len(tx.Bytes())
-		if totalBytes > maxTxsBytes {
-			break
-		}
-		txsToKeep++
-	}
-
-	list = list[:txsToKeep]
-	return list, totalBytes
 }
 
 func (m *mempool) PeekStakerTx() *txs.Tx {

@@ -10,6 +10,7 @@ import (
 
 	"github.com/lasthyphen/dijetsnodego/ids"
 	"github.com/lasthyphen/dijetsnodego/snow"
+	"github.com/lasthyphen/dijetsnodego/utils"
 	"github.com/lasthyphen/dijetsnodego/utils/crypto"
 	"github.com/lasthyphen/dijetsnodego/utils/math"
 	"github.com/lasthyphen/dijetsnodego/utils/timer/mockable"
@@ -27,7 +28,7 @@ import (
 const MaxPageSize = 1024
 
 var (
-	_ Builder = &builder{}
+	_ Builder = (*builder)(nil)
 
 	errNoFunds = errors.New("no spendable funds were found")
 )
@@ -365,7 +366,7 @@ func (b *builder) NewCreateChainTx(
 	signers = append(signers, subnetSigners)
 
 	// Sort the provided fxIDs
-	ids.SortIDs(fxIDs)
+	utils.Sort(fxIDs)
 
 	// Create the tx
 	utx := &txs.CreateChainTx{
@@ -403,7 +404,7 @@ func (b *builder) NewCreateSubnetTx(
 	}
 
 	// Sort control addresses
-	ids.SortShortIDs(ownerAddrs)
+	utils.Sort(ownerAddrs)
 
 	// Create the tx
 	utx := &txs.CreateSubnetTx{

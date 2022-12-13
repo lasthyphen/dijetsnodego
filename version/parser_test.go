@@ -33,11 +33,11 @@ func TestParse(t *testing.T) {
 }
 
 func TestParseApplication(t *testing.T) {
-	v, err := ParseApplication("dijets/1.2.3")
+	v, err := ParseApplication("avalanche/1.2.3")
 
 	require.NoError(t, err)
 	require.NotNil(t, v)
-	require.Equal(t, "dijets/1.2.3", v.String())
+	require.Equal(t, "avalanche/1.2.3", v.String())
 	require.Equal(t, 1, v.Major)
 	require.Equal(t, 2, v.Minor)
 	require.Equal(t, 3, v.Patch)
@@ -46,10 +46,10 @@ func TestParseApplication(t *testing.T) {
 
 	badVersions := []string{
 		"",
-		"dijets/",
-		"dijets/z.0.0",
-		"dijets/0.z.0",
-		"dijets/0.0.z",
+		"avalanche/",
+		"avalanche/z.0.0",
+		"avalanche/0.z.0",
+		"avalanche/0.0.z",
 	}
 	for _, badVersion := range badVersions {
 		_, err := ParseApplication(badVersion)

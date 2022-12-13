@@ -15,7 +15,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/wallet/subnet/primary/common"
 )
 
-var _ Builder = &builderWithOptions{}
+var _ Builder = (*builderWithOptions)(nil)
 
 type builderWithOptions struct {
 	Builder

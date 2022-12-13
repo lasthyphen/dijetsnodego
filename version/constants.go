@@ -4,17 +4,24 @@
 package version
 
 import (
+	"encoding/json"
 	"time"
+
+	_ "embed"
 
 	"github.com/lasthyphen/dijetsnodego/utils/constants"
 )
+
+// RPCChainVMProtocol should be bumped anytime changes are made which require
+// the plugin vm to upgrade to latest avalanchego release to be compatible.
+const RPCChainVMProtocol uint = 20
 
 // These are globals that describe network upgrades and node versions
 var (
 	Current = &Semantic{
 		Major: 1,
 		Minor: 8,
-		Patch: 6,
+		Patch: 7,
 	}
 	CurrentApp = &Application{
 		Major: Current.Major,
@@ -46,15 +53,22 @@ var (
 		Patch: 0,
 	}
 
+	//go:embed compatibility.json
+	rpcChainVMProtocolCompatibilityBytes []byte
+	// RPCChainVMProtocolCompatibility maps RPCChainVMProtocol versions to the
+	// set of avalanchego versions that supported that version. This is not used
+	// by avalanchego, but is useful for downstream libraries.
+	RPCChainVMProtocolCompatibility map[uint][]*Semantic
+
 	ApricotPhase3Times = map[uint32]time.Time{
 		constants.MainnetID: time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC),
-		constants.TahoeID:   time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC),
+		constants.TahoeID:    time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC),
 	}
 	ApricotPhase3DefaultTime = time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC)
 
 	ApricotPhase4Times = map[uint32]time.Time{
 		constants.MainnetID: time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC),
-		constants.TahoeID:   time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC),
+		constants.TahoeID:    time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC),
 	}
 	ApricotPhase4DefaultTime     = time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC)
 	ApricotPhase4MinPChainHeight = map[uint32]uint64{
@@ -65,30 +79,50 @@ var (
 
 	ApricotPhase5Times = map[uint32]time.Time{
 		constants.MainnetID: time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC),
-		constants.TahoeID:   time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC),
+		constants.TahoeID:    time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC),
 	}
 	ApricotPhase5DefaultTime = time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC)
 
 	ApricotPhase6Times = map[uint32]time.Time{
-		constants.MainnetID: time.Date(2022, time.September, 8, 20, 0, 0, 0, time.UTC),
-		constants.TahoeID:    time.Date(2022, time.September, 8, 20, 0, 0, 0, time.UTC),
+		constants.MainnetID: time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC),
+		constants.TahoeID:    time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC),
 	}
 	ApricotPhase6DefaultTime = time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC)
 
-	// FIXME: update this before release
-	BlueberryTimes = map[uint32]time.Time{
+	BanffTimes = map[uint32]time.Time{
 		constants.MainnetID: time.Date(10000, time.December, 1, 0, 0, 0, 0, time.UTC),
-		constants.TahoeID:   time.Date(10000, time.December, 1, 0, 0, 0, 0, time.UTC),
+		constants.TahoeID:    time.Date(10000, time.December, 1, 0, 0, 0, 0, time.UTC),
 	}
-	BlueberryDefaultTime = time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC)
+	BanffDefaultTime = time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC)
 
 	// FIXME: update this before release
 	XChainMigrationTimes = map[uint32]time.Time{
 		constants.MainnetID: time.Date(10000, time.December, 1, 0, 0, 0, 0, time.UTC),
-		constants.TahoeID:   time.Date(10000, time.December, 1, 0, 0, 0, 0, time.UTC),
+		constants.TahoeID:    time.Date(10000, time.December, 1, 0, 0, 0, 0, time.UTC),
 	}
 	XChainMigrationDefaultTime = time.Date(2020, time.December, 5, 5, 0, 0, 0, time.UTC)
 )
+
+func init() {
+	var parsedRPCChainVMCompatibility map[uint][]string
+	err := json.Unmarshal(rpcChainVMProtocolCompatibilityBytes, &parsedRPCChainVMCompatibility)
+	if err != nil {
+		panic(err)
+	}
+
+	RPCChainVMProtocolCompatibility = make(map[uint][]*Semantic)
+	for rpcChainVMProtocol, versionStrings := range parsedRPCChainVMCompatibility {
+		versions := make([]*Semantic, len(versionStrings))
+		for i, versionString := range versionStrings {
+			version, err := Parse(versionString)
+			if err != nil {
+				panic(err)
+			}
+			versions[i] = version
+		}
+		RPCChainVMProtocolCompatibility[rpcChainVMProtocol] = versions
+	}
+}
 
 func GetApricotPhase3Time(networkID uint32) time.Time {
 	if upgradeTime, exists := ApricotPhase3Times[networkID]; exists {
@@ -125,11 +159,11 @@ func GetApricotPhase6Time(networkID uint32) time.Time {
 	return ApricotPhase6DefaultTime
 }
 
-func GetBlueberryTime(networkID uint32) time.Time {
-	if upgradeTime, exists := BlueberryTimes[networkID]; exists {
+func GetBanffTime(networkID uint32) time.Time {
+	if upgradeTime, exists := BanffTimes[networkID]; exists {
 		return upgradeTime
 	}
-	return BlueberryDefaultTime
+	return BanffDefaultTime
 }
 
 func GetXChainMigrationTime(networkID uint32) time.Time {
@@ -143,7 +177,7 @@ func GetCompatibility(networkID uint32) Compatibility {
 	return NewCompatibility(
 		CurrentApp,
 		MinimumCompatibleVersion,
-		GetApricotPhase6Time(networkID),
+		GetBanffTime(networkID),
 		PrevMinimumCompatibleVersion,
 	)
 }

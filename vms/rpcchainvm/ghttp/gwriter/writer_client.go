@@ -11,7 +11,7 @@ import (
 	writerpb "github.com/lasthyphen/dijetsnodego/proto/pb/io/writer"
 )
 
-var _ io.Writer = &Client{}
+var _ io.Writer = (*Client)(nil)
 
 // Client is an io.Writer that talks over RPC.
 type Client struct{ client writerpb.WriterClient }

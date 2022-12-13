@@ -7,12 +7,12 @@ import (
 	stdcontext "context"
 
 	"github.com/lasthyphen/dijetsnodego/ids"
+	"github.com/lasthyphen/dijetsnodego/utils/crypto/keychain"
 	"github.com/lasthyphen/dijetsnodego/vms/components/djtx"
 	"github.com/lasthyphen/dijetsnodego/vms/platformvm/txs"
-	"github.com/lasthyphen/dijetsnodego/vms/secp256k1fx"
 )
 
-var _ Signer = &txSigner{}
+var _ Signer = (*txSigner)(nil)
 
 type Signer interface {
 	SignUnsigned(ctx stdcontext.Context, tx txs.UnsignedTx) (*txs.Tx, error)
@@ -25,11 +25,11 @@ type SignerBackend interface {
 }
 
 type txSigner struct {
-	kc      *secp256k1fx.Keychain
+	kc      keychain.Keychain
 	backend SignerBackend
 }
 
-func NewSigner(kc *secp256k1fx.Keychain, backend SignerBackend) Signer {
+func NewSigner(kc keychain.Keychain, backend SignerBackend) Signer {
 	return &txSigner{
 		kc:      kc,
 		backend: backend,

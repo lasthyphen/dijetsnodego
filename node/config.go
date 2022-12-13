@@ -17,11 +17,13 @@ import (
 	"github.com/lasthyphen/dijetsnodego/snow/networking/router"
 	"github.com/lasthyphen/dijetsnodego/snow/networking/sender"
 	"github.com/lasthyphen/dijetsnodego/snow/networking/tracker"
+	"github.com/lasthyphen/dijetsnodego/trace"
 	"github.com/lasthyphen/dijetsnodego/utils/crypto/bls"
 	"github.com/lasthyphen/dijetsnodego/utils/dynamicip"
 	"github.com/lasthyphen/dijetsnodego/utils/ips"
 	"github.com/lasthyphen/dijetsnodego/utils/logging"
 	"github.com/lasthyphen/dijetsnodego/utils/profiler"
+	"github.com/lasthyphen/dijetsnodego/utils/set"
 	"github.com/lasthyphen/dijetsnodego/utils/timer"
 	"github.com/lasthyphen/dijetsnodego/vms"
 )
@@ -149,9 +151,6 @@ type Config struct {
 	// ID of the network this node should connect to
 	NetworkID uint32 `json:"networkID"`
 
-	// Assertions configuration
-	EnableAssertions bool `json:"enableAssertions"`
-
 	// Health
 	HealthCheckFreq time.Duration `json:"healthCheckFreq"`
 
@@ -191,13 +190,14 @@ type Config struct {
 	ConsensusGossipFrequency time.Duration `json:"consensusGossipFreq"`
 
 	// Subnet Whitelist
-	WhitelistedSubnets ids.Set `json:"whitelistedSubnets"`
+	WhitelistedSubnets set.Set[ids.ID] `json:"whitelistedSubnets"`
 
 	// SubnetConfigs
 	SubnetConfigs map[ids.ID]chains.SubnetConfig `json:"subnetConfigs"`
 
 	// ChainConfigs
 	ChainConfigs map[string]chains.ChainConfig `json:"-"`
+	ChainAliases map[ids.ID][]string           `json:"chainAliases"`
 
 	// VM management
 	VMManager vms.Manager `json:"-"`
@@ -225,4 +225,19 @@ type Config struct {
 
 	RequiredAvailableDiskSpace         uint64 `json:"requiredAvailableDiskSpace"`
 	WarningThresholdAvailableDiskSpace uint64 `json:"warningThresholdAvailableDiskSpace"`
+
+	TraceConfig trace.Config `json:"traceConfig"`
+
+	// See comment on [MinPercentConnectedStakeHealthy] in platformvm.Config
+	MinPercentConnectedStakeHealthy map[ids.ID]float64 `json:"minPercentConnectedStakeHealthy"`
+
+	// See comment on [UseCurrentHeight] in platformvm.Config
+	UseCurrentHeight bool `json:"useCurrentHeight"`
+
+	// ProvidedFlags contains all the flags set by the user
+	ProvidedFlags map[string]interface{} `json:"-"`
+
+	// ChainDataDir is the root path for per-chain directories where VMs can
+	// write arbitrary data.
+	ChainDataDir string `json:"chainDataDir"`
 }

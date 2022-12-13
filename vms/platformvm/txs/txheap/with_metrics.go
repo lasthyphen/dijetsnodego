@@ -10,7 +10,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/vms/platformvm/txs"
 )
 
-var _ Heap = &withMetrics{}
+var _ Heap = (*withMetrics)(nil)
 
 type withMetrics struct {
 	Heap

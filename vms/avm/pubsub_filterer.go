@@ -10,7 +10,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/vms/components/djtx"
 )
 
-var _ pubsub.Filterer = &filterer{}
+var _ pubsub.Filterer = (*filterer)(nil)
 
 type filterer struct {
 	tx *txs.Tx

@@ -11,6 +11,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/ids"
 	"github.com/lasthyphen/dijetsnodego/snow"
 	"github.com/lasthyphen/dijetsnodego/utils/constants"
+	"github.com/lasthyphen/dijetsnodego/utils/crypto/bls"
 	"github.com/lasthyphen/dijetsnodego/utils/math"
 	"github.com/lasthyphen/dijetsnodego/vms/components/djtx"
 	"github.com/lasthyphen/dijetsnodego/vms/components/verify"
@@ -20,7 +21,7 @@ import (
 )
 
 var (
-	_ DelegatorTx = &AddDelegatorTx{}
+	_ DelegatorTx = (*AddDelegatorTx)(nil)
 
 	errDelegatorWeightMismatch = errors.New("delegator weight is not equal to total stake weight")
 )
@@ -49,17 +50,45 @@ func (tx *AddDelegatorTx) InitCtx(ctx *snow.Context) {
 	tx.DelegationRewardsOwner.InitCtx(ctx)
 }
 
-func (tx *AddDelegatorTx) SubnetID() ids.ID     { return constants.PrimaryNetworkID }
-func (tx *AddDelegatorTx) NodeID() ids.NodeID   { return tx.Validator.NodeID }
-func (tx *AddDelegatorTx) StartTime() time.Time { return tx.Validator.StartTime() }
-func (tx *AddDelegatorTx) EndTime() time.Time   { return tx.Validator.EndTime() }
-func (tx *AddDelegatorTx) Weight() uint64       { return tx.Validator.Wght }
-func (tx *AddDelegatorTx) PendingPriority() Priority {
+func (*AddDelegatorTx) SubnetID() ids.ID {
+	return constants.PrimaryNetworkID
+}
+
+func (tx *AddDelegatorTx) NodeID() ids.NodeID {
+	return tx.Validator.NodeID
+}
+
+func (*AddDelegatorTx) PublicKey() (*bls.PublicKey, bool, error) {
+	return nil, false, nil
+}
+
+func (tx *AddDelegatorTx) StartTime() time.Time {
+	return tx.Validator.StartTime()
+}
+
+func (tx *AddDelegatorTx) EndTime() time.Time {
+	return tx.Validator.EndTime()
+}
+
+func (tx *AddDelegatorTx) Weight() uint64 {
+	return tx.Validator.Wght
+}
+
+func (*AddDelegatorTx) PendingPriority() Priority {
 	return PrimaryNetworkDelegatorApricotPendingPriority
 }
-func (tx *AddDelegatorTx) CurrentPriority() Priority         { return PrimaryNetworkDelegatorCurrentPriority }
-func (tx *AddDelegatorTx) Stake() []*djtx.TransferableOutput { return tx.StakeOuts }
-func (tx *AddDelegatorTx) RewardsOwner() fx.Owner            { return tx.DelegationRewardsOwner }
+
+func (*AddDelegatorTx) CurrentPriority() Priority {
+	return PrimaryNetworkDelegatorCurrentPriority
+}
+
+func (tx *AddDelegatorTx) Stake() []*djtx.TransferableOutput {
+	return tx.StakeOuts
+}
+
+func (tx *AddDelegatorTx) RewardsOwner() fx.Owner {
+	return tx.DelegationRewardsOwner
+}
 
 // SyntacticVerify returns nil iff [tx] is valid
 func (tx *AddDelegatorTx) SyntacticVerify(ctx *snow.Context) error {

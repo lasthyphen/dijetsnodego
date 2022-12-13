@@ -15,6 +15,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/utils/formatting"
 	"github.com/lasthyphen/dijetsnodego/utils/formatting/address"
 	"github.com/lasthyphen/dijetsnodego/utils/json"
+	"github.com/lasthyphen/dijetsnodego/utils/set"
 	"github.com/lasthyphen/dijetsnodego/vms/avm"
 	"github.com/lasthyphen/dijetsnodego/vms/avm/fxs"
 	"github.com/lasthyphen/dijetsnodego/vms/nftfx"
@@ -52,8 +53,8 @@ func validateInitialStakedFunds(config *Config) error {
 		return errNoInitiallyStakedFunds
 	}
 
-	allocationSet := ids.ShortSet{}
-	initialStakedFundsSet := ids.ShortSet{}
+	allocationSet := set.Set[ids.ShortID]{}
+	initialStakedFundsSet := set.Set[ids.ShortID]{}
 	for _, allocation := range config.Allocations {
 		// It is ok to have duplicates as different
 		// ethAddrs could claim to the same djtxAddr.
@@ -322,7 +323,7 @@ func FromConfig(config *Config) ([]byte, ids.ID, error) {
 		return nil, ids.ID{}, fmt.Errorf("couldn't calculate the initial supply: %w", err)
 	}
 
-	initiallyStaked := ids.ShortSet{}
+	initiallyStaked := set.Set[ids.ShortID]{}
 	initiallyStaked.Add(config.InitialStakedFunds...)
 	skippedAllocations := []Allocation(nil)
 

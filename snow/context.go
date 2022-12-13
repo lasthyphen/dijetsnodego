@@ -16,6 +16,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/ids"
 	"github.com/lasthyphen/dijetsnodego/snow/validators"
 	"github.com/lasthyphen/dijetsnodego/utils"
+	"github.com/lasthyphen/dijetsnodego/utils/crypto/bls"
 	"github.com/lasthyphen/dijetsnodego/utils/logging"
 )
 
@@ -41,6 +42,7 @@ type Context struct {
 	NodeID    ids.NodeID
 
 	XChainID    ids.ID
+	CChainID    ids.ID
 	DJTXAssetID ids.ID
 
 	Log          logging.Logger
@@ -55,6 +57,10 @@ type Context struct {
 	ValidatorState    validators.State  // interface for P-Chain validators
 	StakingLeafSigner crypto.Signer     // block signer
 	StakingCertLeaf   *x509.Certificate // block certificate
+	StakingBLSKey     *bls.SecretKey    // bls signer
+
+	// Chain-specific directory where arbitrary data can be written
+	ChainDataDir string
 }
 
 // Expose gatherer interface for unit testing.
@@ -120,13 +126,14 @@ func (ctx *ConsensusContext) SetValidatorOnly() {
 
 func DefaultContextTest() *Context {
 	return &Context{
-		NetworkID: 0,
-		SubnetID:  ids.Empty,
-		ChainID:   ids.Empty,
-		NodeID:    ids.EmptyNodeID,
-		Log:       logging.NoLog{},
-		BCLookup:  ids.NewAliaser(),
-		Metrics:   metrics.NewOptionalGatherer(),
+		NetworkID:    0,
+		SubnetID:     ids.Empty,
+		ChainID:      ids.Empty,
+		NodeID:       ids.EmptyNodeID,
+		Log:          logging.NoLog{},
+		BCLookup:     ids.NewAliaser(),
+		Metrics:      metrics.NewOptionalGatherer(),
+		ChainDataDir: "",
 	}
 }
 

@@ -15,7 +15,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/utils/wrappers"
 )
 
-var _ snow.Acceptor = &EventSockets{}
+var _ snow.Acceptor = (*EventSockets)(nil)
 
 // EventSockets is a set of named eventSockets
 type EventSockets struct {

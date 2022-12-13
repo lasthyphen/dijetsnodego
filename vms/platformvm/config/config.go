@@ -8,10 +8,10 @@ import (
 
 	"github.com/lasthyphen/dijetsnodego/chains"
 	"github.com/lasthyphen/dijetsnodego/ids"
-	"github.com/lasthyphen/dijetsnodego/snow/engine/common"
 	"github.com/lasthyphen/dijetsnodego/snow/uptime"
 	"github.com/lasthyphen/dijetsnodego/snow/validators"
 	"github.com/lasthyphen/dijetsnodego/utils/constants"
+	"github.com/lasthyphen/dijetsnodego/utils/set"
 	"github.com/lasthyphen/dijetsnodego/vms/platformvm/reward"
 	"github.com/lasthyphen/dijetsnodego/vms/platformvm/txs"
 )
@@ -22,10 +22,12 @@ type Config struct {
 	Chains chains.Manager
 
 	// Node's validator set maps subnetID -> validators of the subnet
+	//
+	// Invariant: The primary network's validator set should have been added to
+	//            the manager before calling VM.Initialize.
+	// Invariant: The primary network's validator set should be empty before
+	//            calling VM.Initialize.
 	Validators validators.Manager
-
-	// Provides access to subnet tracking
-	SubnetTracker common.SubnetTracker
 
 	// Provides access to the uptime manager as a thread safe data structure
 	UptimeLockedCalculator uptime.LockedCalculator
@@ -34,7 +36,7 @@ type Config struct {
 	StakingEnabled bool
 
 	// Set of subnets that this node is validating
-	WhitelistedSubnets ids.Set
+	WhitelistedSubnets set.Set[ids.ID]
 
 	// Fee that is burned by every non-state creating transaction
 	TxFee uint64
@@ -93,8 +95,26 @@ type Config struct {
 	// Time of the AP5 network upgrade
 	ApricotPhase5Time time.Time
 
-	// Time of the Blueberry network upgrade
-	BlueberryTime time.Time
+	// Time of the Banff network upgrade
+	BanffTime time.Time
+
+	// Subnet ID --> Minimum portion of the subnet's stake this node must be
+	// connected to in order to report healthy.
+	// [constants.PrimaryNetworkID] is always a key in this map.
+	// If a subnet is in this map, but it isn't whitelisted, its corresponding
+	// value isn't used.
+	// If a subnet is whitelisted but not in this map, we use the value for the
+	// Primary Network.
+	MinPercentConnectedStakeHealthy map[ids.ID]float64
+
+	// UseCurrentHeight forces [GetMinimumHeight] to return the current height
+	// of the P-Chain instead of the oldest block in the [recentlyAccepted]
+	// window.
+	//
+	// This config is particularly useful for triggering proposervm activation
+	// on recently created subnets (without this, users need to wait for
+	// [recentlyAcceptedWindowTTL] to pass for activation to occur).
+	UseCurrentHeight bool
 }
 
 func (c *Config) IsApricotPhase3Activated(timestamp time.Time) bool {
@@ -105,8 +125,8 @@ func (c *Config) IsApricotPhase5Activated(timestamp time.Time) bool {
 	return !timestamp.Before(c.ApricotPhase5Time)
 }
 
-func (c *Config) IsBlueberryActivated(timestamp time.Time) bool {
-	return !timestamp.Before(c.BlueberryTime)
+func (c *Config) IsBanffActivated(timestamp time.Time) bool {
+	return !timestamp.Before(c.BanffTime)
 }
 
 func (c *Config) GetCreateBlockchainTxFee(timestamp time.Time) uint64 {
@@ -132,11 +152,13 @@ func (c *Config) CreateChain(chainID ids.ID, tx *txs.CreateChainTx) {
 		return
 	}
 
-	c.Chains.CreateChain(chains.ChainParameters{
+	chainParams := chains.ChainParameters{
 		ID:          chainID,
 		SubnetID:    tx.SubnetID,
 		GenesisData: tx.GenesisData,
 		VMID:        tx.VMID,
 		FxIDs:       tx.FxIDs,
-	})
+	}
+
+	c.Chains.QueueChainCreation(chainParams)
 }

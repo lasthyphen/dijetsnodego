@@ -14,6 +14,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/utils/crypto"
 	"github.com/lasthyphen/dijetsnodego/utils/hashing"
 	"github.com/lasthyphen/dijetsnodego/utils/math"
+	"github.com/lasthyphen/dijetsnodego/utils/set"
 	"github.com/lasthyphen/dijetsnodego/utils/timer/mockable"
 	"github.com/lasthyphen/dijetsnodego/vms/components/djtx"
 	"github.com/lasthyphen/dijetsnodego/vms/components/verify"
@@ -25,7 +26,7 @@ import (
 )
 
 var (
-	_ Handler = &handler{}
+	_ Handler = (*handler)(nil)
 
 	errCantSign                     = errors.New("can't sign")
 	errLockedFundsNotMarkedAsLocked = errors.New("locked funds not marked as locked")
@@ -178,7 +179,7 @@ func (h *handler) Spend(
 	[][]*crypto.PrivateKeySECP256K1R, // signers
 	error,
 ) {
-	addrs := ids.NewShortSet(len(keys)) // The addresses controlled by [keys]
+	addrs := set.NewSet[ids.ShortID](len(keys)) // The addresses controlled by [keys]
 	for _, key := range keys {
 		addrs.Add(key.PublicKey().Address())
 	}
@@ -248,7 +249,7 @@ func (h *handler) Spend(
 		remainingValue := in.Amount()
 
 		// Stake any value that should be staked
-		amountToStake := math.Min64(
+		amountToStake := math.Min(
 			amount-amountStaked, // Amount we still need to stake
 			remainingValue,      // Amount available to stake
 		)
@@ -300,9 +301,9 @@ func (h *handler) Spend(
 	amountBurned := uint64(0)
 
 	for _, utxo := range utxos {
-		// If we have consumed more DJTX than we are trying to stake, and we
-		// have burned more DJTX then we need to, then we have no need to
-		// consume more DJTX
+		// If we have consumed more DJTX than we are trying to stake,
+		// and we have burned more DJTX than we need to,
+		// then we have no need to consume more DJTX
 		if amountBurned >= fee && amountStaked >= amount {
 			break
 		}
@@ -339,7 +340,7 @@ func (h *handler) Spend(
 		remainingValue := in.Amount()
 
 		// Burn any value that should be burned
-		amountToBurn := math.Min64(
+		amountToBurn := math.Min(
 			fee-amountBurned, // Amount we still need to burn
 			remainingValue,   // Amount available to burn
 		)
@@ -347,7 +348,7 @@ func (h *handler) Spend(
 		remainingValue -= amountToBurn
 
 		// Stake any value that should be staked
-		amountToStake := math.Min64(
+		amountToStake := math.Min(
 			amount-amountStaked, // Amount we still need to stake
 			remainingValue,      // Amount available to stake
 		)

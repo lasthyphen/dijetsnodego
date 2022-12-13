@@ -10,6 +10,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/codec"
 	"github.com/lasthyphen/dijetsnodego/codec/linearcodec"
 	"github.com/lasthyphen/dijetsnodego/ids"
+	"github.com/lasthyphen/dijetsnodego/utils"
 	"github.com/lasthyphen/dijetsnodego/vms/secp256k1fx"
 )
 
@@ -244,11 +245,11 @@ func TestTransferableInputSorting(t *testing.T) {
 		},
 	}
 
-	if IsSortedAndUniqueTransferableInputs(ins) {
+	if utils.IsSortedAndUniqueSortable(ins) {
 		t.Fatalf("Shouldn't be sorted")
 	}
-	SortTransferableInputs(ins)
-	if !IsSortedAndUniqueTransferableInputs(ins) {
+	utils.Sort(ins)
+	if !utils.IsSortedAndUniqueSortable(ins) {
 		t.Fatalf("Should be sorted")
 	}
 
@@ -261,7 +262,7 @@ func TestTransferableInputSorting(t *testing.T) {
 		In:    &TestTransferable{},
 	})
 
-	if IsSortedAndUniqueTransferableInputs(ins) {
+	if utils.IsSortedAndUniqueSortable(ins) {
 		t.Fatalf("Shouldn't be unique")
 	}
 }

@@ -9,7 +9,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/vms/platformvm/txs"
 )
 
-var _ TimedHeap = &byStartTime{}
+var _ TimedHeap = (*byStartTime)(nil)
 
 type TimedHeap interface {
 	Heap

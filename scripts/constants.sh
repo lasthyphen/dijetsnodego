@@ -20,7 +20,7 @@ evm_path="$plugin_dir/evm"
 # Avalabs docker hub
 # avaplatform/avalanchego - defaults to local as to avoid unintentional pushes
 # You should probably set it - export DOCKER_REPO='avaplatform/avalanchego'
-avalanchego_dockerhub_repo=${DOCKER_REPO:-"dijetsnodego"}
+avalanchego_dockerhub_repo=${DOCKER_REPO:-"avalanchego"}
 
 # Current branch
 # TODO: fix "fatal: No names found, cannot describe anything" in github CI

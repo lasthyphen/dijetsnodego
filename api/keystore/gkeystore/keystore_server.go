@@ -17,7 +17,7 @@ import (
 	rpcdbpb "github.com/lasthyphen/dijetsnodego/proto/pb/rpcdb"
 )
 
-var _ keystorepb.KeystoreServer = &Server{}
+var _ keystorepb.KeystoreServer = (*Server)(nil)
 
 // Server is a snow.Keystore that is managed over RPC.
 type Server struct {

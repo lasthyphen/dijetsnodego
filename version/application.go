@@ -12,7 +12,7 @@ import (
 var (
 	errDifferentMajor = errors.New("different major version")
 
-	_ fmt.Stringer = &Semantic{}
+	_ fmt.Stringer = (*Semantic)(nil)
 )
 
 type Application struct {
@@ -32,7 +32,7 @@ func (a *Application) String() string {
 	}
 
 	str := fmt.Sprintf(
-		"dijets/%d.%d.%d",
+		"avalanche/%d.%d.%d",
 		a.Major,
 		a.Minor,
 		a.Patch,

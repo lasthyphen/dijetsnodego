@@ -17,6 +17,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/database/prefixdb"
 	"github.com/lasthyphen/dijetsnodego/ids"
 	"github.com/lasthyphen/dijetsnodego/utils/logging"
+	"github.com/lasthyphen/dijetsnodego/utils/set"
 	"github.com/lasthyphen/dijetsnodego/utils/wrappers"
 	"github.com/lasthyphen/dijetsnodego/vms/components/djtx"
 )
@@ -27,8 +28,8 @@ var (
 	errIndexingRequiredFromGenesis = errors.New("running would create incomplete index. Allow incomplete indices or re-sync from genesis with indexing enabled")
 	errCausesIncompleteIndex       = errors.New("running would create incomplete index. Allow incomplete indices or enable indexing")
 
-	_ AddressTxsIndexer = &indexer{}
-	_ AddressTxsIndexer = &noIndexer{}
+	_ AddressTxsIndexer = (*indexer)(nil)
+	_ AddressTxsIndexer = (*noIndexer)(nil)
 )
 
 // AddressTxsIndexer maintains information about which transactions changed
@@ -105,7 +106,7 @@ func (i *indexer) Accept(txID ids.ID, inputUTXOs []*djtx.UTXO, outputUTXOs []*dj
 	// Address -> AssetID --> exists if the address's balance
 	// of the asset is changed by processing tx [txID]
 	// we do this step separately to simplify the write process later
-	balanceChanges := make(map[string]map[ids.ID]struct{})
+	balanceChanges := map[string]set.Set[ids.ID]{}
 	for _, utxo := range utxos {
 		out, ok := utxo.Out.(djtx.Addressable)
 		if !ok {
@@ -120,10 +121,10 @@ func (i *indexer) Accept(txID ids.ID, inputUTXOs []*djtx.UTXO, outputUTXOs []*dj
 
 			addressChanges, exists := balanceChanges[address]
 			if !exists {
-				addressChanges = make(map[ids.ID]struct{})
+				addressChanges = set.Set[ids.ID]{}
 				balanceChanges[address] = addressChanges
 			}
-			addressChanges[utxo.AssetID()] = struct{}{}
+			addressChanges.Add(utxo.AssetID())
 		}
 	}
 
@@ -251,10 +252,10 @@ func NewNoIndexer(db database.Database, allowIncomplete bool) (AddressTxsIndexer
 	return &noIndexer{}, checkIndexStatus(db, false, allowIncomplete)
 }
 
-func (i *noIndexer) Accept(ids.ID, []*djtx.UTXO, []*djtx.UTXO) error {
+func (*noIndexer) Accept(ids.ID, []*djtx.UTXO, []*djtx.UTXO) error {
 	return nil
 }
 
-func (i *noIndexer) Read([]byte, ids.ID, uint64, uint64) ([]ids.ID, error) {
+func (*noIndexer) Read([]byte, ids.ID, uint64, uint64) ([]ids.ID, error) {
 	return nil, nil
 }

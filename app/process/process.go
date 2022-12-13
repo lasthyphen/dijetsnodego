@@ -33,7 +33,7 @@ var (
 	stakingPortName = fmt.Sprintf("%s-staking", constants.AppName)
 	httpPortName    = fmt.Sprintf("%s-http", constants.AppName)
 
-	_ app.App = &process{}
+	_ app.App = (*process)(nil)
 )
 
 // process is a wrapper around a node that runs in this process
@@ -85,11 +85,6 @@ func (p *process) Start() error {
 		log.Warn("sybil control is not enforced",
 			zap.String("reason", "staking is disabled"),
 		)
-	}
-
-	// Track if assertions should be executed
-	if p.config.LoggingConfig.Assertions {
-		log.Debug("assertions are enabled. This may slow down execution")
 	}
 
 	// TODO move this to config

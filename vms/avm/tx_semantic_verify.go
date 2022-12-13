@@ -4,13 +4,12 @@
 package avm
 
 import (
-	"github.com/lasthyphen/dijetsnodego/utils/constants"
 	"github.com/lasthyphen/dijetsnodego/vms/avm/txs"
 	"github.com/lasthyphen/dijetsnodego/vms/components/djtx"
 	"github.com/lasthyphen/dijetsnodego/vms/components/verify"
 )
 
-var _ txs.Visitor = &txSemanticVerify{}
+var _ txs.Visitor = (*txSemanticVerify)(nil)
 
 // SemanticVerify that this transaction is well-formed.
 type txSemanticVerify struct {
@@ -90,7 +89,6 @@ func (t *txSemanticVerify) ExportTx(tx *txs.ExportTx) error {
 		}
 	}
 
-	now := t.vm.clock.Time()
 	for _, out := range tx.ExportedOuts {
 		fxIndex, err := t.vm.getFx(out.Out)
 		if err != nil {
@@ -98,17 +96,6 @@ func (t *txSemanticVerify) ExportTx(tx *txs.ExportTx) error {
 		}
 
 		assetID := out.AssetID()
-		if !t.vm.IsBlueberryActivated(now) {
-			// TODO: Remove this check once the Blueberry network upgrade is
-			//       complete.
-			//
-			// Blueberry network upgrade allows exporting of all assets to the
-			// P-chain.
-			if assetID != t.vm.ctx.DJTXAssetID && tx.DestinationChain == constants.PlatformChainID {
-				return errWrongAssetID
-			}
-		}
-
 		if !t.vm.verifyFxUsage(fxIndex, assetID) {
 			return errIncompatibleFx
 		}

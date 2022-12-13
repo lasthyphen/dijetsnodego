@@ -5,6 +5,7 @@ package common
 
 import (
 	"github.com/lasthyphen/dijetsnodego/ids"
+	"github.com/lasthyphen/dijetsnodego/utils/set"
 	"github.com/lasthyphen/dijetsnodego/vms/secp256k1fx"
 )
 
@@ -12,7 +13,7 @@ import (
 // threshold.
 func MatchOwners(
 	owners *secp256k1fx.OutputOwners,
-	addrs ids.ShortSet,
+	addrs set.Set[ids.ShortID],
 	minIssuanceTime uint64,
 ) ([]uint32, bool) {
 	if owners.Locktime > minIssuanceTime {

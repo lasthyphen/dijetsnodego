@@ -10,6 +10,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/codec"
 	"github.com/lasthyphen/dijetsnodego/ids"
 	"github.com/lasthyphen/dijetsnodego/snow"
+	"github.com/lasthyphen/dijetsnodego/utils"
 	"github.com/lasthyphen/dijetsnodego/utils/units"
 	"github.com/lasthyphen/dijetsnodego/vms/avm/fxs"
 	"github.com/lasthyphen/dijetsnodego/vms/components/djtx"
@@ -450,7 +451,7 @@ func TestCreateAssetTxSerializationAgain(t *testing.T) {
 	}
 }
 
-func TestCreateAssetTxGetters(t *testing.T) {
+func TestCreateAssetTxGetters(*testing.T) {
 	tx := &CreateAssetTx{
 		BaseTx: BaseTx{BaseTx: djtx.BaseTx{
 			NetworkID:    networkID,
@@ -923,7 +924,7 @@ func TestCreateAssetTxSyntacticVerifyInitialStates(t *testing.T) {
 		},
 	}
 
-	SortInitialStates(uniqueStates)
+	utils.Sort(uniqueStates)
 
 	// Put states in unsorted order
 	tx.States = []*InitialState{

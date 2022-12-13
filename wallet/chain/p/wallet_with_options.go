@@ -1,7 +1,7 @@
 // Copyright (C) 2019-2022, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
-package
+package p
 
 import (
 	"time"
@@ -15,7 +15,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/wallet/subnet/primary/common"
 )
 
-var _ Wallet = &walletWithOptions{}
+var _ Wallet = (*walletWithOptions)(nil)
 
 func NewWalletWithOptions(
 	wallet Wallet,

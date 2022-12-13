@@ -9,6 +9,7 @@ import (
 
 	"github.com/lasthyphen/dijetsnodego/ids"
 	"github.com/lasthyphen/dijetsnodego/snow"
+	"github.com/lasthyphen/dijetsnodego/utils"
 	"github.com/lasthyphen/dijetsnodego/utils/constants"
 	"github.com/lasthyphen/dijetsnodego/utils/units"
 	"github.com/lasthyphen/dijetsnodego/vms/components/verify"
@@ -20,7 +21,7 @@ const (
 )
 
 var (
-	_ UnsignedTx = &CreateChainTx{}
+	_ UnsignedTx = (*CreateChainTx)(nil)
 
 	ErrCantValidatePrimaryNetwork = errors.New("new blockchain can't be validated by primary network")
 
@@ -61,7 +62,7 @@ func (tx *CreateChainTx) SyntacticVerify(ctx *snow.Context) error {
 		return errNameTooLong
 	case tx.VMID == ids.Empty:
 		return errInvalidVMID
-	case !ids.IsSortedAndUniqueIDs(tx.FxIDs):
+	case !utils.IsSortedAndUniqueSortable(tx.FxIDs):
 		return errFxIDsNotSortedAndUnique
 	case len(tx.GenesisData) > MaxGenesisLen:
 		return errGenesisTooLong

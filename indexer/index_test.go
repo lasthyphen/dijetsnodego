@@ -16,6 +16,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/snow"
 	"github.com/lasthyphen/dijetsnodego/utils"
 	"github.com/lasthyphen/dijetsnodego/utils/logging"
+	"github.com/lasthyphen/dijetsnodego/utils/set"
 	"github.com/lasthyphen/dijetsnodego/utils/timer/mockable"
 )
 
@@ -99,7 +100,7 @@ func TestIndex(t *testing.T) {
 
 	// Ensure that the data is correct
 	lastTimestamp := int64(0)
-	sawContainers := ids.Set{}
+	sawContainers := set.Set[ids.ID]{}
 	for _, container := range containersList {
 		require.False(sawContainers.Contains(container.ID)) // Should only see this container once
 		require.Contains(containers, container.ID)

@@ -9,6 +9,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/codec"
 	"github.com/lasthyphen/dijetsnodego/ids"
 	"github.com/lasthyphen/dijetsnodego/snow"
+	"github.com/lasthyphen/dijetsnodego/utils/set"
 	"github.com/lasthyphen/dijetsnodego/vms/components/djtx"
 	"github.com/lasthyphen/dijetsnodego/vms/secp256k1fx"
 )
@@ -16,8 +17,8 @@ import (
 var (
 	errNoImportInputs = errors.New("no import inputs")
 
-	_ UnsignedTx             = &ImportTx{}
-	_ secp256k1fx.UnsignedTx = &ImportTx{}
+	_ UnsignedTx             = (*ImportTx)(nil)
+	_ secp256k1fx.UnsignedTx = (*ImportTx)(nil)
 )
 
 // ImportTx is a transaction that imports an asset from another blockchain.
@@ -42,7 +43,7 @@ func (t *ImportTx) InputUTXOs() []*djtx.UTXOID {
 }
 
 // ConsumedAssetIDs returns the IDs of the assets this transaction consumes
-func (t *ImportTx) ConsumedAssetIDs() ids.Set {
+func (t *ImportTx) ConsumedAssetIDs() set.Set[ids.ID] {
 	assets := t.BaseTx.AssetIDs()
 	for _, in := range t.ImportedIns {
 		assets.Add(in.AssetID())
@@ -51,7 +52,7 @@ func (t *ImportTx) ConsumedAssetIDs() ids.Set {
 }
 
 // AssetIDs returns the IDs of the assets this transaction depends on
-func (t *ImportTx) AssetIDs() ids.Set {
+func (t *ImportTx) AssetIDs() set.Set[ids.ID] {
 	assets := t.BaseTx.AssetIDs()
 	for _, in := range t.ImportedIns {
 		assets.Add(in.AssetID())
@@ -71,7 +72,7 @@ func (t *ImportTx) SyntacticVerify(
 	txFeeAssetID ids.ID,
 	txFee uint64,
 	_ uint64,
-	numFxs int,
+	_ int,
 ) error {
 	switch {
 	case t == nil:

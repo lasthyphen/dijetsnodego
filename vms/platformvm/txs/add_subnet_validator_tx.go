@@ -10,12 +10,13 @@ import (
 	"github.com/lasthyphen/dijetsnodego/ids"
 	"github.com/lasthyphen/dijetsnodego/snow"
 	"github.com/lasthyphen/dijetsnodego/utils/constants"
+	"github.com/lasthyphen/dijetsnodego/utils/crypto/bls"
 	"github.com/lasthyphen/dijetsnodego/vms/components/verify"
 	"github.com/lasthyphen/dijetsnodego/vms/platformvm/validator"
 )
 
 var (
-	_ StakerTx = &AddSubnetValidatorTx{}
+	_ StakerTx = (*AddSubnetValidatorTx)(nil)
 
 	errAddPrimaryNetworkValidator = errors.New("can't add primary network validator with AddSubnetValidatorTx")
 )
@@ -30,17 +31,35 @@ type AddSubnetValidatorTx struct {
 	SubnetAuth verify.Verifiable `serialize:"true" json:"subnetAuthorization"`
 }
 
-func (tx *AddSubnetValidatorTx) SubnetID() ids.ID     { return tx.Validator.Subnet }
-func (tx *AddSubnetValidatorTx) NodeID() ids.NodeID   { return tx.Validator.NodeID }
-func (tx *AddSubnetValidatorTx) StartTime() time.Time { return tx.Validator.StartTime() }
-func (tx *AddSubnetValidatorTx) EndTime() time.Time   { return tx.Validator.EndTime() }
-func (tx *AddSubnetValidatorTx) Weight() uint64       { return tx.Validator.Wght }
+func (tx *AddSubnetValidatorTx) SubnetID() ids.ID {
+	return tx.Validator.Subnet
+}
 
-func (tx *AddSubnetValidatorTx) PendingPriority() Priority {
+func (tx *AddSubnetValidatorTx) NodeID() ids.NodeID {
+	return tx.Validator.NodeID
+}
+
+func (*AddSubnetValidatorTx) PublicKey() (*bls.PublicKey, bool, error) {
+	return nil, false, nil
+}
+
+func (tx *AddSubnetValidatorTx) StartTime() time.Time {
+	return tx.Validator.StartTime()
+}
+
+func (tx *AddSubnetValidatorTx) EndTime() time.Time {
+	return tx.Validator.EndTime()
+}
+
+func (tx *AddSubnetValidatorTx) Weight() uint64 {
+	return tx.Validator.Wght
+}
+
+func (*AddSubnetValidatorTx) PendingPriority() Priority {
 	return SubnetPermissionedValidatorPendingPriority
 }
 
-func (tx *AddSubnetValidatorTx) CurrentPriority() Priority {
+func (*AddSubnetValidatorTx) CurrentPriority() Priority {
 	return SubnetPermissionedValidatorCurrentPriority
 }
 

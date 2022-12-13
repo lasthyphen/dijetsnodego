@@ -8,13 +8,14 @@ import (
 
 	"github.com/lasthyphen/dijetsnodego/chains/atomic"
 	"github.com/lasthyphen/dijetsnodego/ids"
+	"github.com/lasthyphen/dijetsnodego/utils/set"
 	"github.com/lasthyphen/dijetsnodego/vms/platformvm/blocks"
 	"github.com/lasthyphen/dijetsnodego/vms/platformvm/state"
 )
 
 type standardBlockState struct {
 	onAcceptFunc func()
-	inputs       ids.Set
+	inputs       set.Set[ids.ID]
 }
 
 type proposalBlockState struct {

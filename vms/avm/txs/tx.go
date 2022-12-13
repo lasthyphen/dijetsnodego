@@ -12,6 +12,7 @@ import (
 	"github.com/lasthyphen/dijetsnodego/snow"
 	"github.com/lasthyphen/dijetsnodego/utils/crypto"
 	"github.com/lasthyphen/dijetsnodego/utils/hashing"
+	"github.com/lasthyphen/dijetsnodego/utils/set"
 	"github.com/lasthyphen/dijetsnodego/vms/avm/fxs"
 	"github.com/lasthyphen/dijetsnodego/vms/components/djtx"
 	"github.com/lasthyphen/dijetsnodego/vms/nftfx"
@@ -27,8 +28,8 @@ type UnsignedTx interface {
 	Initialize(unsignedBytes []byte)
 	Bytes() []byte
 
-	ConsumedAssetIDs() ids.Set
-	AssetIDs() ids.Set
+	ConsumedAssetIDs() set.Set[ids.ID]
+	AssetIDs() set.Set[ids.ID]
 
 	NumCredentials() int
 	InputUTXOs() []*djtx.UTXOID
@@ -65,10 +66,14 @@ func (t *Tx) Initialize(unsignedBytes, signedBytes []byte) {
 }
 
 // ID returns the unique ID of this tx
-func (t *Tx) ID() ids.ID { return t.id }
+func (t *Tx) ID() ids.ID {
+	return t.id
+}
 
 // Bytes returns the binary representation of this tx
-func (t *Tx) Bytes() []byte { return t.bytes }
+func (t *Tx) Bytes() []byte {
+	return t.bytes
+}
 
 // UTXOs returns the UTXOs transaction is producing.
 func (t *Tx) UTXOs() []*djtx.UTXO {

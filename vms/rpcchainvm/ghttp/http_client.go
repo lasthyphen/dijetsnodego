@@ -16,7 +16,7 @@ import (
 	responsewriterpb "github.com/lasthyphen/dijetsnodego/proto/pb/http/responsewriter"
 )
 
-var _ http.Handler = &Client{}
+var _ http.Handler = (*Client)(nil)
 
 // Client is an http.Handler that talks over RPC.
 type Client struct {

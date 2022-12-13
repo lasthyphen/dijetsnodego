@@ -4,6 +4,8 @@
 package indexer
 
 import (
+	"context"
+
 	"github.com/lasthyphen/dijetsnodego/database/versiondb"
 	"github.com/lasthyphen/dijetsnodego/ids"
 	"github.com/lasthyphen/dijetsnodego/snow/consensus/snowman"
@@ -16,5 +18,5 @@ type BlockServer interface {
 
 	// Note: this is a contention heavy call that should be avoided
 	// for frequent/repeated indexer ops
-	GetFullPostForkBlock(blkID ids.ID) (snowman.Block, error)
+	GetFullPostForkBlock(ctx context.Context, blkID ids.ID) (snowman.Block, error)
 }
