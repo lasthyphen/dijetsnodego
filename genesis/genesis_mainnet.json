@@ -4,12 +4,12 @@
 		{
 			"ethAddr": "0x1B00f59fff05F6591c13e32740377eAE72661061",
 			"djtxAddr": "X-dijets1uxkc262hvgsvstguvawwaanmsh8zvtcsd64l5e",
-			"initialAmount": 120000000000000000
+			"initialAmount": 30000000000000000
 		},
 		{
 			"ethAddr": "0xd86b355443158939c2f1b2A00961F8453b33E74E",
 			"djtxAddr": "X-dijets1v8wat5z4cxh7wh873d7n6d9m6mpnynr8sgl059",
-			"initialAmount": 124333333000000000
+			"initialAmount": 30000000000000000
 		},
 		{
 			"ethAddr": "0x80231567cD6E270c8360B80b97034Ec26dad83b8",
@@ -17,58 +17,58 @@
 			"initialAmount": 0,
 			"unlockSchedule": [
 				{
-					"amount": 1750000000000000,
+					"amount": 175000000000000,
 					"locktime": 1670280124
 				},
 				{
-					"amount": 1750000000000000,
+					"amount": 175000000000000,
 					"locktime": 1672958524
 				},
 				{
-					"amount": 1750000000000000,
+					"amount": 175000000000000,
 					"locktime": 1675636924
 				},
 				{
-					"amount": 1750000000000000,
+					"amount": 175000000000000,
 					"locktime": 1678056124
 				},
 				{
-					"amount": 1750000000000000,
+					"amount": 175000000000000,
 					"locktime": 1680730924
 				},
 				{
-					"amount": 1750000000000000,
+					"amount": 175000000000000,
 					"locktime": 1680730924
 				},
 				{
-					"amount": 1750000000000000,
+					"amount": 175000000000000,
 					"locktime": 1683409324
 				},
 				{
-					"amount": 1750000000000000,
+					"amount": 175000000000000,
 					"locktime": 1688679724
 				},
 				{
-					"amount": 1750000000000000,
+					"amount": 175000000000000,
 					"locktime": 1694036524
 				},
 				{
-					"amount": 1750000000000000,
+					"amount": 175000000000000,
 					"locktime": 1699310524
 				},
 				{
-					"amount": 1750000000000000,
+					"amount": 175000000000000,
 					"locktime": 1704580924
 				},
 				{
-					"amount": 1750000000000000,
+					"amount": 175000000000000,
 					"locktime": 1707259324
 				}
 			]
 		},
 		{
-			"ethAddr": "0xebe8467313e178acbe394e6e3755100c709c2e63",
-			"djtxAddr": "X-dijets1yt3f82xwqctd7h0m63qhu8w0e59rlquxajhexk",
+			"ethAddr": "0x9010F91C986dA7018c0918E1562abD039DB63Bdb",
+			"djtxAddr": "X-dijets174rcm4tva8f7t4m7u2nxe7a236nv9pcwhdmt5v",
 			"initialAmount": 0,
 			"unlockSchedule": [
 				{
@@ -122,8 +122,8 @@
 			]
 		},
 		{
-			"ethAddr": "0x0FE71278D4F6FabcBfF80A3C58947724e40a77fd",
-			"djtxAddr": "X-dijets1umw42smlwq6em4krng53zch0gpzjt8vlkqu3e9",
+			"ethAddr": "0x30bD7DcdE7848A360B7226EBa7A6427C488d5832",
+			"djtxAddr": "X-dijets19qeq9fg568ztpace8mdecq4jd9rx5dj64fc4sf",
 			"initialAmount": 0,
 			"unlockSchedule": [
 				{
@@ -177,32 +177,32 @@
 			]
 		},
 		{
-			"ethAddr": "0x288F0cb5199a568612A056a8c19d8DFc6CfA4E2a",
-			"djtxAddr": "X-dijets1xqaxst4yd03zkg5p4r8pdvggak8q8gvl43xqqq",
+			"ethAddr": "0x6E04B23a9Fa424289A10eef126b04Dc13B38069c",
+			"djtxAddr": "X-dijets1eg0gnn7q2uvk66kht7yqn8xtugz7uvutfk0txf",
 			"initialAmount": 0,
 			"unlockSchedule": [
 				{
-					"amount": 1083333330000000,
+					"amount": 10833333300000,
 					"locktime": 1670280124
 				},
 				{
-					"amount": 1083333330000000,
+					"amount": 10833333300000,
 					"locktime": 1672958524
 				},
 				{
-					"amount": 1083333330000000,
+					"amount": 10833333300000,
 					"locktime": 1675636924
 				},
 				{
-					"amount": 1083333330000000,
+					"amount": 10833333300000,
 					"locktime": 1678056124
 				},
 				{
-					"amount": 1083333330000000,
+					"amount": 10833333300000,
 					"locktime": 1680730924
 				},
 				{
-					"amount": 1083333330000000,
+					"amount": 10833333300000,
 					"locktime": 1680730924
 				},
 				{
@@ -210,30 +210,30 @@
 					"locktime": 1683409324
 				},
 				{
-					"amount": 1083333330000000,
+					"amount": 10833333300000,
 					"locktime": 1688679724
 				},
 				{
-					"amount": 1083333330000000,
+					"amount": 10833333300000,
 					"locktime": 1694036524
 				},
 				{
-					"amount": 1083333330000000,
+					"amount": 10833333300000,
 					"locktime": 1699310524
 				},
 				{
-					"amount": 1083333330000000,
+					"amount": 10833333300000,
 					"locktime": 1704580924
 				},
 				{
-					"amount": 1083333330000000,
+					"amount": 10833333300000,
 					"locktime": 1707259324
 				}
 			]
 		},
 		{
-			"ethAddr": "0x0b2F5262F0494100e332F7891C737A6dcb0d7238",
-			"djtxAddr": "X-dijets1g7cxf7g8ml90zg399ewgpg8rw6c9r380xf7xsl",
+			"ethAddr": "0x3507A1131aba9D07714b76Eb8a245F434198690B",
+			"djtxAddr": "X-dijets1ggwu285vknzzjs2rqyvzyrkjd0guc5lfgam9qp",
 			"initialAmount": 0,
 			"unlockSchedule": [
 				{
@@ -287,56 +287,6 @@
 			]
 		},
 		{
-			"ethAddr": "0x0d69710f7036EBe9763AF7eD3fe36C266Ab3D399",
-			"djtxAddr": "X-dijets1dep9x84as7nku059x8e9xg5hvdtq9ktye4rtmt",
-			"initialAmount": 0,
-			"unlockSchedule": [
-				{
-					"amount": 800000000000000
-				}
-			]
-		},
-		{
-			"ethAddr": "0xc097f92ea678ca466c8d23f8d046458e099f4252",
-			"djtxAddr": "X-dijets1p0krkav5u2l54pqcd3rnjaxrleah25pmsj3792",
-			"initialAmount": 0,
-			"unlockSchedule": [
-				{
-					"amount": 800000000000000
-				}
-			]
-		},
-		{
-			"ethAddr": "0xc00789d0a917298866d0baf97eb2e7ee1deb2748",
-			"djtxAddr": "X-dijets10fdcu7a3z9epeqdfwd83253mvuukak2sl8sna9",
-			"initialAmount": 0,
-			"unlockSchedule": [
-				{
-					"amount": 800000000000000
-				}
-			]
-		},
-		{
-			"ethAddr": "0x5b1df479658e206bfca34e77d02a56878c67df28",
-			"djtxAddr": "X-dijets10khggleau7808p5ceqq826yc2n802qs2r56mrq",
-			"initialAmount": 0,
-			"unlockSchedule": [
-				{
-					"amount": 800000000000000
-				}
-			]
-		},
-		{
-			"ethAddr": "0x2d788b73733ff34ef03bc8c2208594140aed8d19",
-			"djtxAddr": "X-dijets1l04dg5vxghv9pnuz8hm2x2h6eykz58xzmhn57h",
-			"initialAmount": 0,
-			"unlockSchedule": [
-				{
-					"amount": 800000000000000
-				}
-			]
-		},
-		{
 			"ethAddr": "0x2070D7F1b4052c14f31a0C65AD8E011A6cEc33A7",
 			"djtxAddr": "X-dijets1rrwvthn2cxpmhfx376hsrnx04me0s24ajsqgsq",
 			"initialAmount": 0,
@@ -347,8 +297,8 @@
 			]
 		},
 		{
-			"ethAddr": "0x6E04B23a9Fa424289A10eef126b04Dc13B38069c",
-			"djtxAddr": "X-dijets1eg0gnn7q2uvk66kht7yqn8xtugz7uvutfk0txf",
+			"ethAddr": "0x83101459D424C8f538F37F293D9151702859fDD6",
+			"djtxAddr": "X-dijets1gq7fqklm93veh3gsxahu6a4uuu04d4shuqxnc8",
 			"initialAmount": 0,
 			"unlockSchedule": [
 				{
@@ -357,8 +307,8 @@
 			]
 		},
 		{
-			"ethAddr": "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC",
-			"djtxAddr": "X-dijets18jma8ppw3nhx5r4ap8clazz0dps7rv5ujq54md",
+			"ethAddr": "0xCB4f9d421e2164D85a77d1ae0eff5d3a1e56b454",
+			"djtxAddr": "X-dijets12p06h3dktfnt8jlrkvr93u7h4vjhx8wx39esng",
 			"initialAmount": 0,
 			"unlockSchedule": [
 				{
@@ -367,8 +317,8 @@
 			]
 		},
 		{
-			"ethAddr": "0xea0df620254F5D577dDBB7d5F63a68d1d961C979",
-			"djtxAddr": "X-dijets169chkgna7crmt3y7ujcqp6xg2qx3fzhg4nj7xn",
+			"ethAddr": "0xa42451b72EC0210528e77D6febAD848253896250",
+			"djtxAddr": "X-dijets1pag5qx6v6udm0myfpa6mg2jd8kf033wp5jzfzg",
 			"initialAmount": 0,
 			"unlockSchedule": [
 				{
@@ -379,6 +329,56 @@
 		{
 			"ethAddr": "0xa85c8831526c36bCa2821e3491e319441D94f928",
 			"djtxAddr": "X-dijets1fmq580x966pmzkt9h4uhe5djjdn42vlx3cwl34",
+			"initialAmount": 0,
+			"unlockSchedule": [
+				{
+					"amount": 800000000000000
+				}
+			]
+		},
+		{
+			"ethAddr": "0xb09085d85C416d353d7a469263e52688ab2dfE4A",
+			"djtxAddr": "X-dijets1chlc4au6w90etdmvl6uhdcle025jcrvxzthc5e",
+			"initialAmount": 0,
+			"unlockSchedule": [
+				{
+					"amount": 800000000000000
+				}
+			]
+		},
+		{
+			"ethAddr": "0xa28a4B8c614aCF3F3448daD91cA80A2B3034A8D9",
+			"djtxAddr": "X-dijets1mvqs89w6e3qn758cdmutv759tsyac97hf6m7vx",
+			"initialAmount": 0,
+			"unlockSchedule": [
+				{
+					"amount": 800000000000000
+				}
+			]
+		},
+		{
+			"ethAddr": "0xb4124cEB3451635DAcedd11767f004d8a28c6eE7",
+			"djtxAddr": "X-dijets163yr65mhglrvu5wngu4qkw6lj4pqh2zggut3fk",
+			"initialAmount": 0,
+			"unlockSchedule": [
+				{
+					"amount": 800000000000000
+				}
+			]
+		},
+		{
+			"ethAddr": "0x0FE71278D4F6FabcBfF80A3C58947724e40a77fd",
+			"djtxAddr": "X-dijets1umw42smlwq6em4krng53zch0gpzjt8vlkqu3e9",
+			"initialAmount": 0,
+			"unlockSchedule": [
+				{
+					"amount": 800000000000000
+				}
+			]
+		},
+		{
+			"ethAddr": "0xea0df620254F5D577dDBB7d5F63a68d1d961C979",
+			"djtxAddr": "X-dijets169chkgna7crmt3y7ujcqp6xg2qx3fzhg4nj7xn",
 			"initialAmount": 0,
 			"unlockSchedule": [
 				{

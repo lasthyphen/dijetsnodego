@@ -41,7 +41,7 @@ var (
 				MaxConsumptionRate: .12 * reward.PercentDenominator,
 				MinConsumptionRate: .10 * reward.PercentDenominator,
 				MintingPeriod:      365 * 24 * time.Hour,
-				SupplyCap:          666666666 * units.Djtx,
+				SupplyCap:          111111111 * units.Djtx,
 			},
 		},
 	}

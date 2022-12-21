@@ -13,19 +13,9 @@ func getIPs(networkID uint32) []string {
 	switch networkID {
 	case constants.MainnetID:
 		return []string{
-			"20.38.169.107:9651",
-			"20.38.169.107:9653",
-			"20.38.169.107:9655",
-			"20.38.169.107:9657",
-			"20.38.169.107:9659",
 		}
 	case constants.TahoeID:
 		return []string{
-			"20.38.169.107:9651",
-			"20.38.169.107:9653",
-			"20.38.169.107:9655",
-			"20.38.169.107:9657",
-			"20.38.169.107:9659",
 		}
 	default:
 		return nil
@@ -37,19 +27,9 @@ func getNodeIDs(networkID uint32) []string {
 	switch networkID {
 	case constants.MainnetID:
 		return []string{
-			"NodeID-7Xhw2mDxuDS44j42TCB6U5579esbSt3Lg",
-			"NodeID-MFrZFVCXPv5iCn6M9K6XduxGTYp891xXZ",
-			"NodeID-NFBbbJ4qCmNaCzeW7sxErhvWqvEQMnYcN",
-			"NodeID-GWPcbFJZFfZreETSoWjPimr846mXEKCtu",
-			"NodeID-P7oB2McjBGgW2NXXWVYjV8JEDFoW9xDE5",
 		}
 	case constants.TahoeID:
 		return []string{
-			"NodeID-7Xhw2mDxuDS44j42TCB6U5579esbSt3Lg",
-			"NodeID-MFrZFVCXPv5iCn6M9K6XduxGTYp891xXZ",
-			"NodeID-NFBbbJ4qCmNaCzeW7sxErhvWqvEQMnYcN",
-			"NodeID-GWPcbFJZFfZreETSoWjPimr846mXEKCtu",
-			"NodeID-P7oB2McjBGgW2NXXWVYjV8JEDFoW9xDE5",
 		}
 	default:
 		return nil
