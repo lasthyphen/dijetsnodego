@@ -4,12 +4,12 @@
 		{
 			"ethAddr": "0x1B00f59fff05F6591c13e32740377eAE72661061",
 			"djtxAddr": "X-dijets1uxkc262hvgsvstguvawwaanmsh8zvtcsd64l5e",
-			"initialAmount": 30000000000000000
+			"initialAmount": 22500000000000000
 		},
 		{
 			"ethAddr": "0xd86b355443158939c2f1b2A00961F8453b33E74E",
 			"djtxAddr": "X-dijets1v8wat5z4cxh7wh873d7n6d9m6mpnynr8sgl059",
-			"initialAmount": 30000000000000000
+			"initialAmount": 22500000000000000
 		},
 		{
 			"ethAddr": "0x80231567cD6E270c8360B80b97034Ec26dad83b8",
@@ -18,51 +18,51 @@
 			"unlockSchedule": [
 				{
 					"amount": 175000000000000,
-					"locktime": 1670280124
+					"locktime": 1674257383
 				},
 				{
 					"amount": 175000000000000,
-					"locktime": 1672958524
+					"locktime": 1676935783
 				},
 				{
 					"amount": 175000000000000,
-					"locktime": 1675636924
+					"locktime": 1679354983
 				},
 				{
 					"amount": 175000000000000,
-					"locktime": 1678056124
+					"locktime": 1682029783
 				},
 				{
 					"amount": 175000000000000,
-					"locktime": 1680730924
+					"locktime": 1684621783
 				},
 				{
 					"amount": 175000000000000,
-					"locktime": 1680730924
+					"locktime": 1687300183
 				},
 				{
 					"amount": 175000000000000,
-					"locktime": 1683409324
+					"locktime": 1689892183
 				},
 				{
 					"amount": 175000000000000,
-					"locktime": 1688679724
+					"locktime": 1692570583
 				},
 				{
 					"amount": 175000000000000,
-					"locktime": 1694036524
+					"locktime": 1695248983
 				},
 				{
 					"amount": 175000000000000,
-					"locktime": 1699310524
+					"locktime": 1697840983
 				},
 				{
 					"amount": 175000000000000,
-					"locktime": 1704580924
+					"locktime": 1700522983
 				},
 				{
 					"amount": 175000000000000,
-					"locktime": 1707259324
+					"locktime": 1702682983
 				}
 			]
 		},
@@ -73,51 +73,51 @@
 			"unlockSchedule": [
 				{
 					"amount": 1500000000000000,
-					"locktime": 1670280124
+					"locktime": 1674257383
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1672958524
+					"locktime": 1676935783
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1675636924
+					"locktime": 1679354983
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1678056124
+					"locktime": 1682029783
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1680730924
+					"locktime": 1684621783
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1680730924
+					"locktime": 1687300183
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1683409324
+					"locktime": 1689892183
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1688679724
+					"locktime": 1692570583
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1694036524
+					"locktime": 1695248983
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1699310524
+					"locktime": 1697840983
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1704580924
+					"locktime": 1700522983
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1707259324
+					"locktime": 1702682983
 				}
 			]
 		},
@@ -128,51 +128,51 @@
 			"unlockSchedule": [
 				{
 					"amount": 1500000000000000,
-					"locktime": 1670280124
+					"locktime": 1674257383
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1672958524
+					"locktime": 1676935783
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1675636924
+					"locktime": 1679354983
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1678056124
+					"locktime": 1682029783
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1680730924
+					"locktime": 1684621783
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1680730924
+					"locktime": 1687300183
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1683409324
+					"locktime": 1689892183
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1688679724
+					"locktime": 1692570583
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1694036524
+					"locktime": 1695248983
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1699310524
+					"locktime": 1697840983
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1704580924
+					"locktime": 1700522983
 				},
 				{
 					"amount": 1500000000000000,
-					"locktime": 1707259324
+					"locktime": 1702682983
 				}
 			]
 		},
@@ -182,52 +182,52 @@
 			"initialAmount": 0,
 			"unlockSchedule": [
 				{
-					"amount": 10833333300000,
-					"locktime": 1670280124
+					"amount": 20833333300000,
+					"locktime": 1674257383
 				},
 				{
-					"amount": 10833333300000,
-					"locktime": 1672958524
+					"amount": 20833333300000,
+					"locktime": 1676935783
 				},
 				{
-					"amount": 10833333300000,
-					"locktime": 1675636924
+					"amount": 20833333300000,
+					"locktime": 1679354983
 				},
 				{
-					"amount": 10833333300000,
-					"locktime": 1678056124
+					"amount": 20833333300000,
+					"locktime": 1682029783
 				},
 				{
-					"amount": 10833333300000,
-					"locktime": 1680730924
+					"amount": 20833333300000,
+					"locktime": 1684621783
 				},
 				{
-					"amount": 10833333300000,
-					"locktime": 1680730924
+					"amount": 20833333300000,
+					"locktime": 1687300183
 				},
 				{
-					"amount": 1083333330000000,
-					"locktime": 1683409324
+					"amount": 20833333300000,
+					"locktime": 1689892183
 				},
 				{
-					"amount": 10833333300000,
-					"locktime": 1688679724
+					"amount": 20833333300000,
+					"locktime": 1692570583
 				},
 				{
-					"amount": 10833333300000,
-					"locktime": 1694036524
+					"amount": 20833333300000,
+					"locktime": 1695248983
 				},
 				{
-					"amount": 10833333300000,
-					"locktime": 1699310524
+					"amount": 20833333300000,
+					"locktime": 1697840983
 				},
 				{
-					"amount": 10833333300000,
-					"locktime": 1704580924
+					"amount": 20833333300000,
+					"locktime": 1700522983
 				},
 				{
-					"amount": 10833333300000,
-					"locktime": 1707259324
+					"amount": 20833333300000,
+					"locktime": 1702682983
 				}
 			]
 		},
@@ -238,51 +238,51 @@
 			"unlockSchedule": [
 				{
 					"amount": 83333333333333,
-					"locktime": 1670280124
+					"locktime": 1674257383
 				},
 				{
 					"amount": 83333333333333,
-					"locktime": 1672958524  
+					"locktime": 1676935783
 				},
 				{
 					"amount": 83333333333333,
-					"locktime": 1675636924
+					"locktime": 1679354983
 				},
 				{
 					"amount": 83333333333333,
-					"locktime": 1678056124
+					"locktime": 1682029783
 				},
 				{
 					"amount": 83333333333333,
-					"locktime": 1680730924
+					"locktime": 1684621783
 				},
 				{
 					"amount": 83333333333333,
-					"locktime": 1680730924
+					"locktime": 1687300183
 				},
 				{
 					"amount": 83333333333333,
-					"locktime": 1683409324
+					"locktime": 1689892183
 				},
 				{
 					"amount": 83333333333333,
-					"locktime": 1688679724
+					"locktime": 1692570583
 				},
 				{
 					"amount": 83333333333333,
-					"locktime": 1694036524
+					"locktime": 1695248983
 				},
 				{
 					"amount": 83333333333333,
-					"locktime": 1699310524
+					"locktime": 1697840983
 				},
 				{
 					"amount": 83333333333333,
-					"locktime": 1704580924
+					"locktime": 1700522983
 				},
 				{
 					"amount": 83333333333333,
-					"locktime": 1707259324
+					"locktime": 1702682983
 				}
 			]
 		},
@@ -397,7 +397,7 @@
 			]
 		}
 	],
-	"startTime": 1670280124,
+	"startTime": 1703115716,
 	"initialStakeDuration": 31536000,
 	"initialStakeDurationOffset": 54000,
 	"initialStakedFunds": [
